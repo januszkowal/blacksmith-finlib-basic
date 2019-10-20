@@ -1,4 +1,4 @@
-package blacksmith.finlib.commons;
+package org.blacksmith.finlib.basic;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Data;

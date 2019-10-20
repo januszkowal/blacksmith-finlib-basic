@@ -1,4 +1,4 @@
-package blacksmith.finlib.commons;
+package org.blacksmith.finlib.basic;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

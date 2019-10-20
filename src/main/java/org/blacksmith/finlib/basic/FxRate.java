@@ -1,4 +1,4 @@
-package blacksmith.finlib.commons;
+package org.blacksmith.finlib.basic;
 
 public class FxRate {
   String ccy1;
