@@ -3,7 +3,6 @@ package blacksmith.finlib.commons;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.time.LocalDate;
 import java.time.Period;
 import java.time.temporal.Temporal;
 import java.util.Locale;
@@ -14,7 +13,6 @@ import lombok.Getter;
 import lombok.ToString;
 
 @Getter
-//@AllArgsConstructor(staticName="of")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
 public class Frequency implements Serializable, DateOperation {
