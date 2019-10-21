@@ -1,9 +1,8 @@
 package org.blacksmith.finlib.basic;
 
+import org.blacksmith.commons.arg.Validate;
 import com.fasterxml.jackson.annotation.JsonValue;
-import lombok.Data;
 
-@Data(staticConstructor = "of")
 public class Currency {
 
   public static final Currency EUR = Currency.of("EUR");
@@ -15,4 +14,17 @@ public class Currency {
 
   @JsonValue
   private final String isoCode;
+
+  public Currency(final String isoCode) {
+    Validate.checkStringLength(isoCode,3, "Currency iso code must have length 3");
+    this.isoCode = isoCode;
+  }
+
+  public static Currency of(String isoCode) {
+    return new Currency(isoCode);
+  }
+
+  public String getIsoCode() {
+    return this.isoCode;
+  }
 }
