@@ -11,8 +11,7 @@ public class Currency {
   public static final Currency CHF = Currency.of("CHF");
   public static final Currency PLN = Currency.of("PLN");
   public static final Currency JPY = Currency.of("JPY");
-
-  @JsonValue
+  
   private final String isoCode;
 
   public Currency(final String isoCode) {
@@ -24,6 +23,7 @@ public class Currency {
     return new Currency(isoCode);
   }
 
+  @JsonValue
   public String getIsoCode() {
     return this.isoCode;
   }
