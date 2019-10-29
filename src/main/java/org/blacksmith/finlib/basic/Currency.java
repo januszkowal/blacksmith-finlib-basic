@@ -18,7 +18,7 @@ public class Currency {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Currency.class);
 
-  public static final Map<String,Currency> CURRENCIES = new ConcurrentHashMap<>();
+  private static final Map<String,Currency> CURRENCIES = new ConcurrentHashMap<>();
 
   public static final Currency EUR = Currency.of("EUR");
   public static final Currency USD = Currency.of("USD");
