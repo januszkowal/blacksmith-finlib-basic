@@ -1,6 +1,7 @@
 package org.blacksmith.finlib.basic;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import org.blacksmith.commons.arg.Validate;
 import org.slf4j.Logger;
@@ -12,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-@ToString
 @EqualsAndHashCode
 public class Currency {
 
@@ -43,5 +43,10 @@ public class Currency {
 
   public String getIsoCode() {
     return this.isoCode;
+  }
+  
+  @Override
+  public String toString() {
+    return "(isoCode="+this.isoCode+")";
   }
 }
