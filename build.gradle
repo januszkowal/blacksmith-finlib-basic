@@ -35,7 +35,6 @@ dependencies {
     testImplementation 'org.hamcrest:hamcrest-library:2.1'
     testImplementation 'org.blacksmith:blacksmith-test:0.1.0'
     testImplementation 'org.decimal4j:decimal4j:1.0.3'
-    testImplementation 'org.apache.commons:commons-math3:3.5'
 }
 
 jar {
