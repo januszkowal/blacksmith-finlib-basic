@@ -1,17 +1,14 @@
 package org.blacksmith.finlib.basic;
 
 import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.Value;
 
-@Getter
-@EqualsAndHashCode
-@ToString
-@AllArgsConstructor
+
+@Value
 public class CrDtA implements CrDt{
   private final BigDecimal cr;
   private final BigDecimal dt;
@@ -21,11 +18,13 @@ public class CrDtA implements CrDt{
 
   public static final CrDtA ZERO = CrDtA.of(BigDecimal.ZERO,BigDecimal.ZERO);
 
+
   public static CrDtA of (CrDt value) {
     return new CrDtA(value.getCr(),value.getDt());
   }
 
-  public static CrDtA of (BigDecimal cr, BigDecimal dt) {
+  @JsonCreator
+  public static CrDtA of (@JsonProperty("cr")BigDecimal cr, @JsonProperty("dt")BigDecimal dt) {
     return new CrDtA(cr,dt);
   }
 
