@@ -3,6 +3,7 @@ package org.blacksmith.finlib.basic;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Objects;
 import javax.xml.bind.annotation.XmlValue;
 import com.fasterxml.jackson.annotation.JsonValue;
 import org.blacksmith.commons.arg.Validate;
@@ -32,7 +33,7 @@ public class Amount implements Comparable<Amount>, Serializable {
   /**
    * Constructs an instance based on text representation. Format with dot will be accepted, for
    * example 1.25
-   * 
+   *
    * Fraction lower than precision will be truncate.
    */
   public Amount(String value) {
@@ -41,7 +42,7 @@ public class Amount implements Comparable<Amount>, Serializable {
 
   /**
    * Constructs and instance based on Double instance.
-   * 
+   *
    * Fraction lower than precision will be truncate.
    */
   public Amount(double value) {
@@ -60,21 +61,10 @@ public class Amount implements Comparable<Amount>, Serializable {
     return new Amount(value);
   }
 
-  /**
-   * Constructs an instance based on text representation. Format with dot will be accepted, for
-   * example 1.25
-   * 
-   * Fraction lower than precision will be truncate.
-   */
   public static Amount of(String value) {
     return new Amount(value);
   }
 
-  /**
-   * Constructs and instance based on Double instance.
-   * 
-   * Fraction lower than precision will be truncate.
-   */
   public static Amount of(double value) {
     return new Amount(value);
   }
@@ -93,7 +83,6 @@ public class Amount implements Comparable<Amount>, Serializable {
 
   @XmlValue
   @JsonValue
-  // @Property(policy=PojomaticPolicy.ALL)
   public BigDecimal getValue() {
     return value;
   }
@@ -111,11 +100,11 @@ public class Amount implements Comparable<Amount>, Serializable {
   }
 
   public Amount add(Amount augend) {
-    return add(augend.toBigDecimal());
+    return add(augend.getValue());
   }
 
   public Amount subtract(Amount subtrahend) {
-    return subtract(subtrahend.toBigDecimal());
+    return subtract(subtrahend.getValue());
   }
 
   public Amount subtract(BigDecimal subtrahend) {
@@ -143,45 +132,17 @@ public class Amount implements Comparable<Amount>, Serializable {
     return this.value.toPlainString();
   }
 
-  /**
-   * Converts an instance to BigDecimal instance.
-   */
-  public BigDecimal toBigDecimal() {
-    return value;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((value == null) ? 0 : value.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
+  @Override public boolean equals(Object o) {
+    if (this == o)
       return true;
-    }
-    if (obj == null) {
+    if (o == null || getClass() != o.getClass())
       return false;
-    }
-    if (getClass() != obj.getClass()) {
-      if (obj.getClass() == BigDecimal.class) {
-        return value.equals((BigDecimal) obj);
-      } else {
-        return false;
-      }
-    }
-    Amount other = (Amount) obj;
-    if (this.value == null) {
-      if (other.value != null) {
-        return false;
-      }
-    } else if (!this.value.equals(other.value)) {
-      return false;
-    }
-    return true;
+    final Amount amount = (Amount) o;
+    return Objects.equals(value, amount.value);
+  }
+
+  @Override public int hashCode() {
+    return Objects.hash(value);
   }
 
   public int compareTo(Amount o) {
