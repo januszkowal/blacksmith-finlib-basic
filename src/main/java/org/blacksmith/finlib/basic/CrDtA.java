@@ -36,6 +36,19 @@ public class CrDtA implements CrDt{
     return new CrDtA(BigDecimal.ZERO,dt);
   }
 
+  public static CrDtA ofAmount (BigDecimal amount) {
+    return amount.signum()>0 ? new CrDtA(amount,BigDecimal.ZERO) : new CrDtA(BigDecimal.ZERO,amount.abs());
+  }
+
+  public static CrDtA ofAmount (BigDecimal amount, BookingSide side) {
+    return side==BookingSide.C ? new CrDtA(amount,BigDecimal.ZERO) : new CrDtA(BigDecimal.ZERO,amount);
+  }
+
+  public static CrDtA ofAmountWithAlign (BigDecimal amount, BookingSide side) {
+    return amount.signum()*side.sign() > 0 ?
+        new CrDtA(amount.abs(),BigDecimal.ZERO) : new CrDtA(BigDecimal.ZERO,amount.abs());
+  }
+
   @Override
   public CrDtA add(CrDt other) {
     return CrDtA.of(this.cr.add(other.getCr()),this.dt.add(other.getDt()));
