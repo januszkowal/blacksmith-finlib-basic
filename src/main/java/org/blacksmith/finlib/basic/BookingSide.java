@@ -18,7 +18,7 @@ public enum BookingSide {
   {
     return this.value;
   }
-  public BookingSide getOposite()
+  public BookingSide negate()
   {
     return (this==BookingSide.C) ? BookingSide.D : BookingSide.C;
   }
