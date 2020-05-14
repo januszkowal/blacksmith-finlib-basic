@@ -1,11 +1,10 @@
 package org.blacksmith.finlib.basic;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
-import javax.xml.bind.annotation.XmlValue;
 import org.blacksmith.commons.arg.Validate;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 public class Rate {
   private static final int MAX_SCALE = 9;
@@ -68,7 +67,6 @@ public class Rate {
     return value.setScale(MAX_SCALE, RoundingMode.HALF_UP);
   }
 
-  @XmlValue
   @JsonValue
   public BigDecimal getValue() {
     return value;

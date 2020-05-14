@@ -1,11 +1,10 @@
 package org.blacksmith.finlib.basic;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
-import javax.xml.bind.annotation.XmlValue;
-import com.fasterxml.jackson.annotation.JsonValue;
 import org.blacksmith.commons.arg.Validate;
 
 public class Amount implements Comparable<Amount>, Serializable {
@@ -81,7 +80,6 @@ public class Amount implements Comparable<Amount>, Serializable {
     return new Amount(this.getValue());
   }
 
-  @XmlValue
   @JsonValue
   public BigDecimal getValue() {
     return value;
