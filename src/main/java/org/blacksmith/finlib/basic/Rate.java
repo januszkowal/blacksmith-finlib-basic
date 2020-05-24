@@ -8,6 +8,7 @@ import org.blacksmith.commons.arg.Validate;
 
 public class Rate {
   private static final int MAX_SCALE = 9;
+  public static final Rate ZERO = new Rate(BigDecimal.ZERO);
   private final BigDecimal value;
 
   public Rate(Rate value) {
