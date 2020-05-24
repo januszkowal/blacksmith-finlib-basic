@@ -85,6 +85,8 @@ public class Amount implements Comparable<Amount>, Serializable {
     return value;
   }
 
+  public double doubleValue() {return this.value.doubleValue();}
+
   /**
    * Converts an instance to String, format with dot will be used.
    */

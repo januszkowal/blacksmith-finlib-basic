@@ -7,6 +7,7 @@ import java.util.Objects;
 import org.blacksmith.commons.arg.Validate;
 
 public class Rate {
+
   private static final int MAX_SCALE = 9;
   public static final Rate ZERO = new Rate(BigDecimal.ZERO);
   private final BigDecimal value;
@@ -22,9 +23,8 @@ public class Rate {
   }
 
   /**
-   * Constructs an instance based on text representation. Format with dot will be accepted, for
-   * example 1.25
-   *
+   * Constructs an instance based on text representation. Format with dot will be accepted, for example 1.25
+   * <p>
    * Fraction lower than precision will be truncate.
    */
   public Rate(String value) {
@@ -33,7 +33,7 @@ public class Rate {
 
   /**
    * Constructs and instance based on Double instance.
-   *
+   * <p>
    * Fraction lower than precision will be truncate.
    */
   public Rate(double value) {
@@ -78,16 +78,22 @@ public class Rate {
     return this.value.toPlainString();
   }
 
-  @Override public boolean equals(Object o) {
-    if (this == o)
+  public double doubleValue() {return this.value.doubleValue();}
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
       return true;
-    if (o == null || getClass() != o.getClass())
+    }
+    if (o == null || getClass() != o.getClass()) {
       return false;
+    }
     final Rate rate = (Rate) o;
     return Objects.equals(value, rate.value);
   }
 
-  @Override public int hashCode() {
+  @Override
+  public int hashCode() {
     return Objects.hash(value);
   }
 }
