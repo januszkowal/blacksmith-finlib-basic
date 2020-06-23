@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
-import org.blacksmith.commons.arg.Validate;
+import org.blacksmith.commons.arg.ArgChecker;
 
 public class Rate {
 
@@ -13,12 +13,12 @@ public class Rate {
   private final BigDecimal value;
 
   public Rate(Rate value) {
-    Validate.notNull(value);
+    ArgChecker.notNull(value);
     this.value = value.getValue();
   }
 
   public Rate(BigDecimal value) {
-    Validate.notNull(value);
+    ArgChecker.notNull(value);
     this.value = alignBigDecimalValue(value);
   }
 

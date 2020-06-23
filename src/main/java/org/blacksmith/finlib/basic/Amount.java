@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
-import org.blacksmith.commons.arg.Validate;
+import org.blacksmith.commons.arg.ArgChecker;
 
 public class Amount implements Comparable<Amount>, Serializable {
   private static final long serialVersionUID = 1L;
@@ -20,12 +20,12 @@ public class Amount implements Comparable<Amount>, Serializable {
   public static final Amount HUNDRED = new Amount(100L);
 
   public Amount(Amount value) {   
-    Validate.notNull(value);
+    ArgChecker.notNull(value);
     this.value = value.getValue();
   }
 
   public Amount(BigDecimal value) {
-    Validate.notNull(value);
+    ArgChecker.notNull(value);
     this.value = alignBigDecimalValue(value);
   }
 

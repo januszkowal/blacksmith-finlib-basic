@@ -1,18 +1,13 @@
 package org.blacksmith.finlib.basic;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import org.blacksmith.commons.arg.Validate;
-import org.blacksmith.finlib.rounding.HalfDownRounding;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-
-
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import org.blacksmith.commons.arg.ArgChecker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @EqualsAndHashCode
 public class Currency {
@@ -33,7 +28,7 @@ public class Currency {
 
 
   private Currency(final String isoCode) {
-    Validate.checkStringLength(isoCode,3, "Currency iso code must have length 3");
+    ArgChecker.checkStringLength(isoCode,3, "Currency iso code must have length 3");
     this.isoCode = isoCode;
   }
 
