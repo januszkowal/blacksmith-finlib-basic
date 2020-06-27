@@ -1,0 +1,41 @@
+ext.libs = [
+        apacheCommons: [
+                'org.apache.commons:commons-lang3:' + apacheCommonsVersion],
+        apacheCommonsMath: [
+                'org.apache.commons:commons-math3:' + apacheCommonsMathVersion],
+        commonsBeanutils: [
+                'commons-beanutils:commons-beanutils:' + commonsBeanutilsVersion
+        ],
+        lombok: [
+                'org.projectlombok:lombok:' + lombokVersion],
+        groovy: [
+                'org.codehaus.groovy:groovy:' + groovyVersion,
+                'org.codehaus.groovy:groovy-json:' + groovyVersion,
+                'org.codehaus.groovy:groovy-jsr223:' + groovyVersion,
+                'org.codehaus.groovy:groovy-dateutil:' + groovyVersion],
+        groovyTest: [
+                'org.codehaus.groovy:groovy-test-junit5:' + groovyVersion],
+        jackson: [
+                'com.fasterxml.jackson.core:jackson-databind:' + jacksonVersion],
+        slf4jApi: [
+                'org.slf4j:slf4j-api:' + slf4jVersion],
+        logback: [
+                'ch.qos.logback:logback-classic:' + logbackVersion,
+                'ch.qos.logback:logback-core:' + logbackVersion],
+        blacksmithCommons: [
+                'org.blacksmith:blacksmith-commons:' + blacksmithCommonsVersion],
+        blacksmithFinlibBasic: [
+                'org.blacksmith:blacksmith-finlib-basic:' + blacksmithFinlibVersion],
+        blacksmithTest: [
+                'org.blacksmith:blacksmith-test:' + blacksmithTestVersion],
+        assertj: [
+                'org.assertj:assertj-core:' + assertjVersion],
+        cucumber: [
+                'io.cucumber:cucumber-java:' + cucumberVersion,
+                'io.cucumber:cucumber-junit:' + cucumberVersion],
+        junit: [
+                'org.junit.jupiter:junit-jupiter:' + junitVersion],
+        mockito: [
+                'org.mockito:mockito-core:' + mockitoVersion
+        ]
+]
