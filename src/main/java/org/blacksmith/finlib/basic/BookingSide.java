@@ -3,8 +3,8 @@ package org.blacksmith.finlib.basic;
 public enum BookingSide {
   C("C",1),
   D("D",-1);
-  private String value;
-  private int sign;
+  private final String value;
+  private final int sign;
   BookingSide(String value, int sign)
   {
     this.value = value;

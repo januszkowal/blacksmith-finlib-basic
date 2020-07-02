@@ -1,10 +1,13 @@
 package org.blacksmith.finlib.basic;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.Objects;
+import lombok.Getter;
 import org.apache.commons.lang3.Validate;
 
-public class FxRate {
+@Getter
+public class FxRate implements Comparable<FxRate>{
   private final Currency ccy1;
   private final Currency ccy2;
   private final Rate rate;
@@ -23,7 +26,7 @@ public class FxRate {
   }
 
   public static  FxRate of (String ccy1, String ccy2, BigDecimal rate) {
-    return new FxRate(Currency.of(ccy1),Currency.of(ccy2),Rate.of(rate));
+    return new FxRate(Currency.of(ccy1),Currency.of(ccy2), Rate.of(rate));
   }
 
   @Override
@@ -52,4 +55,13 @@ public class FxRate {
         '}';
   }
 
+  private static final Comparator<FxRate> FX_RATE_COMPARATOR =
+      Comparator.comparing(FxRate::getCcy1)
+          .thenComparing(FxRate::getCcy2)
+          .thenComparing(FxRate::getRate);
+
+  @Override
+  public int compareTo(FxRate o) {
+    return FX_RATE_COMPARATOR.compare(this,o);
+  }
 }

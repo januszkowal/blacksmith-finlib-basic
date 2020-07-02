@@ -96,11 +96,11 @@ public class RoundPoc {
   
   @Test
   public void test4() {
-    BigDecimal amount3 = new BigDecimal(2.15);
-    BigDecimal amount4 = new BigDecimal(1.10) ;
+    BigDecimal amount3 = new BigDecimal(2.15d);
+    BigDecimal amount4 = new BigDecimal(1.10d) ;
     System.out.println("difference between is: " + (amount3.subtract(amount4)));
-    BigDecimal amount5 = new BigDecimal(Double.valueOf(2.15).toString());
-    BigDecimal amount6 = new BigDecimal(Double.valueOf(1.10).toString()) ;
+    BigDecimal amount5 = new BigDecimal(Double.valueOf(2.15d).toString());
+    BigDecimal amount6 = new BigDecimal(Double.valueOf(1.10d).toString()) ;
     System.out.println("difference between is: " + (amount5.subtract(amount6)));
   }
 

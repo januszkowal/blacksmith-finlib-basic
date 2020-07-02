@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @EqualsAndHashCode
-public class Currency {
+public class Currency implements Comparable<Currency> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Currency.class);
 
@@ -44,5 +44,10 @@ public class Currency {
   @Override
   public String toString() {
     return "(isoCode="+this.isoCode+")";
+  }
+
+  @Override
+  public int compareTo(Currency o) {
+    return this.getIsoCode().compareTo(o.getIsoCode());
   }
 }

@@ -1,99 +1,95 @@
 package org.blacksmith.finlib.basic;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Objects;
-import org.blacksmith.commons.arg.ArgChecker;
 
-public class Rate {
+public class Rate extends DecimalRounded<Rate> {
 
-  private static final int MAX_SCALE = 9;
-  public static final Rate ZERO = new Rate(BigDecimal.ZERO);
-  private final BigDecimal value;
+  public static final int DEFAULT_PRECISION = 9;
 
-  public Rate(Rate value) {
-    ArgChecker.notNull(value);
-    this.value = value.getValue();
+  public static final Rate ZERO = new Rate(BigDecimal.ZERO,DEFAULT_PRECISION);
+  public static final Rate ONE = new Rate(BigDecimal.ONE, DEFAULT_PRECISION);
+  public static final Rate TEN = new Rate(BigDecimal.TEN, DEFAULT_PRECISION);
+
+  /**
+   * Single parameter constructors constructs instance with default decimal places
+   * <p>
+   * All constructors - fraction lower than precision will be truncate.
+   */
+
+  public Rate(DecimalRounded<?> value) {
+    super(value,value.decimalPlaces());
+  }
+
+  public Rate(DecimalRounded<?> value, int decimalPlaces) {
+    super(value,decimalPlaces);
+  }
+
+  public Rate(BigDecimal value, int decimalPlaces) {
+    super(value,decimalPlaces);
   }
 
   public Rate(BigDecimal value) {
-    ArgChecker.notNull(value);
-    this.value = alignBigDecimalValue(value);
+    super(value,DEFAULT_PRECISION);
   }
 
-  /**
-   * Constructs an instance based on text representation. Format with dot will be accepted, for example 1.25
-   * <p>
-   * Fraction lower than precision will be truncate.
-   */
-  public Rate(String value) {
-    this(new BigDecimal(value));
+  public Rate(double value, int decimalPlaces) {
+    super(value,decimalPlaces);
   }
 
-  /**
-   * Constructs and instance based on Double instance.
-   * <p>
-   * Fraction lower than precision will be truncate.
-   */
   public Rate(double value) {
-    this(BigDecimal.valueOf(value));
+    super(value,DEFAULT_PRECISION);
   }
 
-  public Rate(long value) {
-    this(BigDecimal.valueOf(value));
+  public Rate(String value, int decimalPlaces) {
+    super(value,decimalPlaces);
   }
 
-  public static Rate of(Rate value) {
+  public Rate(String value) {
+    super(value,DEFAULT_PRECISION);
+  }
+
+  public static Rate of(DecimalRounded<?> value, int decimalPlaces) {
+    return new Rate(value, decimalPlaces);
+  }
+
+  public static Rate of(DecimalRounded<?> value) {
     return new Rate(value);
+  }
+
+  public static Rate of(BigDecimal value, int decimalPlaces) {
+    return new Rate(value, decimalPlaces);
   }
 
   public static Rate of(BigDecimal value) {
     return new Rate(value);
   }
 
+  public static Rate of(String value, int decimalPlaces) {
+    return new Rate(value,decimalPlaces);
+  }
+
   public static Rate of(String value) {
     return new Rate(value);
+  }
+
+  public static Rate of(double value, int decimalPlaces) {
+    return new Rate(value, decimalPlaces);
   }
 
   public static Rate of(double value) {
     return new Rate(value);
   }
 
+  public static Rate of(long value, int decimalPlaces) {
+    return new Rate(value, decimalPlaces);
+  }
+
   public static Rate of(long value) {
     return new Rate(value);
   }
 
-  private BigDecimal alignBigDecimalValue(BigDecimal value) {
-    return value.setScale(MAX_SCALE, RoundingMode.HALF_UP);
-  }
-
-  @JsonValue
-  public BigDecimal getValue() {
-    return value;
-  }
-
   @Override
-  public String toString() {
-    return this.value.toPlainString();
-  }
-
-  public double doubleValue() {return this.value.doubleValue();}
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    final Rate rate = (Rate) o;
-    return Objects.equals(value, rate.value);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(value);
+  protected Rate create(BigDecimal value, int decimalPlaces) {
+    return new Rate(value,decimalPlaces);
   }
 }
