@@ -1,5 +1,6 @@
 package org.blacksmith.finlib.basic;
 
+import org.blacksmith.finlib.basic.numbers.Rate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
