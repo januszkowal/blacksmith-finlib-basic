@@ -225,4 +225,12 @@ public abstract class DecimalRounded<T extends DecimalRounded<T>> implements Com
   public boolean isNegativeOrZero() {
     return value.signum() <= 0;
   }
+
+  public static <T extends DecimalRounded<T>> T min(T v1, T v2) {
+    return v1.compareTo(v2)>0 ? v2 : v1;
+  }
+
+  public static <T extends DecimalRounded<T>> T max(T v1, T v2) {
+    return v1.compareTo(v2)>0 ? v1 : v2;
+  }
 }
