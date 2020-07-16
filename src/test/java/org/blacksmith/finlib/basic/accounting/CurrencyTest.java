@@ -1,7 +1,6 @@
 package org.blacksmith.finlib.basic.accounting;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.blacksmith.finlib.basic.currency.Currency;
 import org.junit.jupiter.api.Test;

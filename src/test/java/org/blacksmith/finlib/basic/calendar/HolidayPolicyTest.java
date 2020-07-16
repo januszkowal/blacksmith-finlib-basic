@@ -9,8 +9,6 @@ import java.util.Set;
 import org.blacksmith.finlib.basic.calendar.policy.ChainedHolidayPolicy;
 import org.blacksmith.finlib.basic.calendar.policy.CombinedHolidayPolicy;
 import org.blacksmith.finlib.basic.calendar.policy.DatePartHolidayPolicy;
-import org.blacksmith.finlib.basic.calendar.policy.StandardWeekDayPolicy;
-import org.blacksmith.finlib.basic.calendar.policy.WeekDayPolicy;
 import org.blacksmith.finlib.basic.calendar.policy.helper.DatePartInMemoryProvider;
 import org.blacksmith.finlib.basic.calendar.policy.helper.StandardDatePartExtractors;
 import org.junit.jupiter.api.Test;

@@ -22,5 +22,5 @@ public enum StandardDatePartExtractors implements DatePartExtractor {
     public LocalDate extract(LocalDate value) {
       return value;
     }
-  };
+  }
 }

@@ -14,7 +14,7 @@ public abstract class DecimalRounded<T extends DecimalRounded<T>> implements Com
   /**
    * All constructors - fraction lower than precision will be truncate.
    */
-  public DecimalRounded(DecimalRounded value) {
+  public DecimalRounded(DecimalRounded<?> value) {
     ArgChecker.notNull(value);
     this.decimalPlaces = value.decimalPlaces;
     this.value = value.getValue();
