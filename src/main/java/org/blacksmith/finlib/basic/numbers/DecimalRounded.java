@@ -6,7 +6,8 @@ import java.math.RoundingMode;
 import java.util.Objects;
 import org.blacksmith.commons.arg.ArgChecker;
 
-public abstract class DecimalRounded<T extends DecimalRounded<T>> implements Comparable<DecimalRounded<?>> {
+public abstract class DecimalRounded<T extends DecimalRounded<T>>
+    implements Comparable<DecimalRounded<?>> {
 
   private final BigDecimal value;
   private final int decimalPlaces;
