@@ -49,11 +49,11 @@ public interface BusinessDayCalendar {
     LocalDate adjusted = date;
     if (amount > 0) {
       for (int i = 0; i < amount; i++) {
-        adjusted = next(adjusted);
+        adjusted = nextInternal(adjusted);
       }
     } else if (amount < 0) {
       for (int i = 0; i > amount; i--) {
-        adjusted = previous(adjusted);
+        adjusted = previousInternal(adjusted);
       }
     }
     return adjusted;
@@ -70,8 +70,12 @@ public interface BusinessDayCalendar {
    */
   default LocalDate next(LocalDate date) {
     ArgChecker.notNull(date);
+    return nextInternal(date);
+  }
+
+  default LocalDate nextInternal(LocalDate date) {
     LocalDate adjusted = date.plusDays(1);
-    return isHoliday(adjusted) ? next(adjusted) : adjusted;
+    return isHoliday(adjusted) ? nextInternal(adjusted) : adjusted;
   }
 
   /**
@@ -85,7 +89,7 @@ public interface BusinessDayCalendar {
     ArgChecker.notNull(date);
     LocalDate adjusted = date;
     for (int i = 0; i < amount; i++) {
-      adjusted = next(adjusted);
+      adjusted = nextInternal(adjusted);
     }
     return adjusted;
   }
@@ -103,54 +107,7 @@ public interface BusinessDayCalendar {
    */
   default LocalDate nextOrSame(LocalDate date) {
     ArgChecker.notNull(date);
-    return isHoliday(date) ? next(date) : date;
-  }
-
-  /**
-   * Finds the previous business day, always returning an earlier date.
-   * <p>
-   * Given a date, this method returns the previous business day.
-   *
-   * @param date  the date to adjust
-   * @return the first business day before the input date
-   * @throws IllegalArgumentException if the calculation is outside the supported range
-   */
-  default LocalDate previous(LocalDate date) {
-    ArgChecker.notNull(date);
-    LocalDate adjusted = date.minusDays(1);
-    return isHoliday(adjusted) ? previous(adjusted) : adjusted;
-  }
-
-  /**
-   * Finds the n-th previous business day, always returning an earlier date.
-   *
-   * @param date   the date
-   * @param amount they number o business days (n-th)
-   * @return Prior n-th business day
-   */
-  default LocalDate previous(LocalDate date, int amount) {
-    ArgChecker.notNull(date);
-    LocalDate adjusted = date;
-    for (int i = 0; i < amount; i++) {
-      adjusted = previous(adjusted);
-    }
-    return adjusted;
-  }
-
-  /**
-   * Finds the previous business day, returning the input date if it is a business day.
-   * <p>
-   * Given a date, this method returns a business day.
-   * If the input date is a business day, it is returned.
-   * Otherwise, the previous business day is returned.
-   *
-   * @param date  the date to adjust
-   * @return the input date if it is a business day, or the previous business day
-   * @throws IllegalArgumentException if the calculation is outside the supported range
-   */
-  default LocalDate previousOrSame(LocalDate date) {
-    ArgChecker.notNull(date);
-    return isHoliday(date) ? previous(date) : date;
+    return isHoliday(date) ? nextInternal(date) : date;
   }
 
   /**
@@ -173,7 +130,58 @@ public interface BusinessDayCalendar {
   default LocalDate nextSameOrLastInMonth(LocalDate date) {
     ArgChecker.notNull(date);
     LocalDate adjusted = nextOrSame(date);
-    return (adjusted.getMonthValue() != date.getMonthValue() ? previous(adjusted) : adjusted);
+    return adjusted.getMonthValue() == date.getMonthValue() ? adjusted : previousInternal(adjusted);
+  }
+
+  /**
+   * Finds the previous business day, always returning an earlier date.
+   * <p>
+   * Given a date, this method returns the previous business day.
+   *
+   * @param date  the date to adjust
+   * @return the first business day before the input date
+   * @throws IllegalArgumentException if the calculation is outside the supported range
+   */
+  default LocalDate previous(LocalDate date) {
+    ArgChecker.notNull(date);
+    return previousInternal(date);
+  }
+
+  default LocalDate previousInternal(LocalDate date) {
+    LocalDate adjusted = date.minusDays(1);
+    return isHoliday(adjusted) ? previousInternal(adjusted) : adjusted;
+  }
+
+  /**
+   * Finds the n-th previous business day, always returning an earlier date.
+   *
+   * @param date   the date
+   * @param amount they number o business days (n-th)
+   * @return Prior n-th business day
+   */
+  default LocalDate previous(LocalDate date, int amount) {
+    ArgChecker.notNull(date);
+    LocalDate adjusted = date;
+    for (int i = 0; i < amount; i++) {
+      adjusted = previousInternal(adjusted);
+    }
+    return adjusted;
+  }
+
+  /**
+   * Finds the previous business day, returning the input date if it is a business day.
+   * <p>
+   * Given a date, this method returns a business day.
+   * If the input date is a business day, it is returned.
+   * Otherwise, the previous business day is returned.
+   *
+   * @param date  the date to adjust
+   * @return the input date if it is a business day, or the previous business day
+   * @throws IllegalArgumentException if the calculation is outside the supported range
+   */
+  default LocalDate previousOrSame(LocalDate date) {
+    ArgChecker.notNull(date);
+    return isHoliday(date) ? previousInternal(date) : date;
   }
 
   /**
@@ -196,7 +204,7 @@ public interface BusinessDayCalendar {
   default LocalDate previousSameOrLastInMonth(LocalDate date) {
     ArgChecker.notNull(date);
     LocalDate adjusted = previousOrSame(date);
-    return (adjusted.getMonthValue() != date.getMonthValue() ? next(date) : adjusted);
+    return adjusted.getMonthValue() == date.getMonthValue() ? adjusted : nextInternal(date);
   }
 
   /**
@@ -210,7 +218,7 @@ public interface BusinessDayCalendar {
    */
   default boolean isLastBusinessDayOfMonth(LocalDate date) {
     ArgChecker.notNull(date);
-    return isBusinessDay(date) && next(date).getMonthValue() != date.getMonthValue();
+    return isBusinessDay(date) && nextInternal(date).getMonthValue() != date.getMonthValue();
   }
 
   /**
