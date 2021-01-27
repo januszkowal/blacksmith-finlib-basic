@@ -1,10 +1,12 @@
 package org.blacksmith.finlib.basic.numbers;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
+
 import org.blacksmith.commons.arg.ArgChecker;
+
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public abstract class DecimalRounded<T extends DecimalRounded<T>>
     implements Comparable<DecimalRounded<?>> {
@@ -13,7 +15,7 @@ public abstract class DecimalRounded<T extends DecimalRounded<T>>
   private final int decimalPlaces;
 
   /**
-   * All constructors - fraction lower than precision will be truncate.
+   * All constructors - fraction lower than precision will be truncated.
    */
   public DecimalRounded(DecimalRounded<?> value) {
     ArgChecker.notNull(value);
@@ -106,7 +108,7 @@ public abstract class DecimalRounded<T extends DecimalRounded<T>>
   }
 
   public T multiply(DecimalRounded<?> multiplicand, int decimalPlaces) {
-    return multiply(multiplicand.value,decimalPlaces);
+    return multiply(multiplicand.value, decimalPlaces);
   }
 
   public T multiply(DecimalRounded<?> multiplicand) {
@@ -114,25 +116,25 @@ public abstract class DecimalRounded<T extends DecimalRounded<T>>
   }
 
   public T multiply(double multiplicand, int decimalPlaces) {
-    return multiply(new BigDecimal(multiplicand),decimalPlaces);
+    return multiply(new BigDecimal(multiplicand), decimalPlaces);
   }
 
   public T multiply(double multiplicand) {
-    return multiply(multiplicand,decimalPlaces);
+    return multiply(multiplicand, decimalPlaces);
   }
 
   /* divide */
 
   public T divide(BigDecimal divisor, int decimalPlaces) {
-    return create(this.value.divide(divisor, decimalPlaces + 1, RoundingMode.HALF_UP),decimalPlaces);
+    return create(this.value.divide(divisor, decimalPlaces + 1, RoundingMode.HALF_UP), decimalPlaces);
   }
 
   public T divide(BigDecimal divisor) {
-    return divide(divisor,decimalPlaces);
+    return divide(divisor, decimalPlaces);
   }
 
   public T divide(DecimalRounded<?> divisor, int decimalPlaces) {
-    return divide(divisor.value,decimalPlaces);
+    return divide(divisor.value, decimalPlaces);
   }
 
   public T divide(DecimalRounded<?> divisor) {
@@ -140,11 +142,11 @@ public abstract class DecimalRounded<T extends DecimalRounded<T>>
   }
 
   public T divide(double divisor, int decimalPlaces) {
-    return divide(new BigDecimal(divisor),decimalPlaces);
+    return divide(new BigDecimal(divisor), decimalPlaces);
   }
 
   public T divide(double divisor) {
-    return divide(divisor,decimalPlaces);
+    return divide(divisor, decimalPlaces);
   }
 
   public T inverse(int decimalPlaces) {
@@ -156,11 +158,11 @@ public abstract class DecimalRounded<T extends DecimalRounded<T>>
   }
 
   public T negate() {
-    return create(this.value.negate(),this.decimalPlaces);
+    return create(this.value.negate(), this.decimalPlaces);
   }
 
   public T abs() {
-    return create(this.value.abs(),this.decimalPlaces);
+    return create(this.value.abs(), this.decimalPlaces);
   }
 
   private BigDecimal alignBigDecimalValue(BigDecimal value, int decimalPlaces) {
@@ -190,7 +192,7 @@ public abstract class DecimalRounded<T extends DecimalRounded<T>>
       return false;
     }
     final DecimalRounded<?> dr = (DecimalRounded<?>) o;
-    return value.compareTo(dr.value)==0;
+    return value.compareTo(dr.value) == 0;
   }
 
   @Override
@@ -228,10 +230,10 @@ public abstract class DecimalRounded<T extends DecimalRounded<T>>
   }
 
   public static <T extends DecimalRounded<T>> T min(T v1, T v2) {
-    return v1.compareTo(v2)>0 ? v2 : v1;
+    return v1.compareTo(v2) > 0 ? v2 : v1;
   }
 
   public static <T extends DecimalRounded<T>> T max(T v1, T v2) {
-    return v1.compareTo(v2)>0 ? v1 : v2;
+    return v1.compareTo(v2) > 0 ? v1 : v2;
   }
 }
