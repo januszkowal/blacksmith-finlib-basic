@@ -12,7 +12,7 @@ plugins {
 }
 
 group = 'org.blacksmith'
-version = '0.1.2'
+version = blacksmithFinlibVersion
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 compileJava.options.encoding = "UTF-8"

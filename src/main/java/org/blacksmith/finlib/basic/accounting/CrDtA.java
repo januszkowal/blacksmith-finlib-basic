@@ -1,18 +1,26 @@
 package org.blacksmith.finlib.basic.accounting;
 
 import java.math.BigDecimal;
+
+import org.blacksmith.commons.arg.ArgChecker;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
 import lombok.Value;
-
 
 @Value
 public class CrDtA implements CrDt {
 
   private final BigDecimal cr;
   private final BigDecimal dt;
+
+  public CrDtA(BigDecimal cr, BigDecimal dt) {
+    ArgChecker.notNull(cr);
+    ArgChecker.notNull(dt);
+    this.cr = cr;
+    this.dt = dt;
+  }
 
   public BigDecimal getCr() {
     return this.cr;
@@ -24,7 +32,6 @@ public class CrDtA implements CrDt {
 
   public static final CrDtA ZERO = CrDtA.of(BigDecimal.ZERO, BigDecimal.ZERO);
 
-
   public static CrDtA of(CrDt value) {
     return new CrDtA(value.getCr(), value.getDt());
   }
@@ -32,6 +39,10 @@ public class CrDtA implements CrDt {
   @JsonCreator
   public static CrDtA of(@JsonProperty("cr") BigDecimal cr, @JsonProperty("dt") BigDecimal dt) {
     return new CrDtA(cr, dt);
+  }
+
+  public static CrDtA ofNullable(BigDecimal cr, BigDecimal dt) {
+    return new CrDtA(cr == null ? BigDecimal.ZERO : cr, dt == null ? BigDecimal.ZERO : dt);
   }
 
   public static CrDtA ofCR(BigDecimal cr) {
