@@ -9,40 +9,49 @@ public class Amount extends DecimalRounded<Amount> implements Serializable {
 
   public static final int DEFAULT_PRECISION = 2;
 
-  public static final Amount ZERO = new Amount(BigDecimal.ZERO,DEFAULT_PRECISION);
+  public static final Amount ZERO = new Amount(BigDecimal.ZERO, DEFAULT_PRECISION);
   public static final Amount ONE = new Amount(BigDecimal.ONE, DEFAULT_PRECISION);
   public static final Amount TEN = new Amount(BigDecimal.TEN, DEFAULT_PRECISION);
+  public static final Amount HUNDRED = new Amount(100, DEFAULT_PRECISION);
 
   public Amount(DecimalRounded<?> value) {
-    super(value,value.decimalPlaces());
+    super(value, value.decimalPlaces());
   }
 
   public Amount(DecimalRounded<?> value, int decimalPlaces) {
-    super(value,decimalPlaces);
+    super(value, decimalPlaces);
   }
 
   public Amount(BigDecimal value, int decimalPlaces) {
-    super(value,decimalPlaces);
+    super(value, decimalPlaces);
   }
 
   public Amount(BigDecimal value) {
-    super(value,DEFAULT_PRECISION);
+    super(value, DEFAULT_PRECISION);
+  }
+
+  public Amount(long value, int decimalPlaces) {
+    super(value, decimalPlaces);
+  }
+
+  public Amount(long value) {
+    super(value, DEFAULT_PRECISION);
   }
 
   public Amount(double value, int decimalPlaces) {
-    super(value,decimalPlaces);
+    super(value, decimalPlaces);
   }
 
   public Amount(double value) {
-    super(value,DEFAULT_PRECISION);
+    super(value, DEFAULT_PRECISION);
   }
 
   public Amount(String value, int decimalPlaces) {
-    super(value,decimalPlaces);
+    super(value, decimalPlaces);
   }
 
   public Amount(String value) {
-    super(value,DEFAULT_PRECISION);
+    super(value, DEFAULT_PRECISION);
   }
 
   public static Amount of(DecimalRounded<?> value, int decimalPlaces) {
@@ -58,11 +67,11 @@ public class Amount extends DecimalRounded<Amount> implements Serializable {
   }
 
   public static Amount of(BigDecimal value) {
-    return new Amount(value,DEFAULT_PRECISION);
+    return new Amount(value, DEFAULT_PRECISION);
   }
 
   public static Amount of(String value, int decimalPlaces) {
-    return new Amount(value,decimalPlaces);
+    return new Amount(value, decimalPlaces);
   }
 
   public static Amount of(String value) {
@@ -87,6 +96,6 @@ public class Amount extends DecimalRounded<Amount> implements Serializable {
 
   @Override
   protected Amount create(BigDecimal value, int decimalPlaces) {
-    return new Amount(value,decimalPlaces);
+    return new Amount(value, decimalPlaces);
   }
 }

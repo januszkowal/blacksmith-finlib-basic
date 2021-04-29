@@ -31,16 +31,6 @@ public class CombinedHolidayPolicy implements HolidayPolicy {
   public static CombinedHolidayPolicy of (HolidayPolicy... policies){
     return new CombinedHolidayPolicy(policies);
   }
-
-//  public void addPolicies(HolidayPolicy...policies) {
-//    ArgChecker.notEmpty(policies, NULL_POLICIES_MESSAGE);
-//    this.policies.addAll(List.of(policies));
-//  }
-//
-//  public void addPolicies(Collection<HolidayPolicy> holidayPolicies) {
-//    ArgChecker.notEmpty(holidayPolicies, "Null holiday policy not allowed");
-//    this.policies.addAll(holidayPolicies);
-//  }
   
   @Override
   public boolean isHoliday(LocalDate date) {

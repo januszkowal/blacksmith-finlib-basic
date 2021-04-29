@@ -8,7 +8,6 @@ public class Rate extends DecimalRounded<Rate> {
 
   public static final Rate ZERO = new Rate(BigDecimal.ZERO,DEFAULT_PRECISION);
   public static final Rate ONE = new Rate(BigDecimal.ONE, DEFAULT_PRECISION);
-  public static final Rate TEN = new Rate(BigDecimal.TEN, DEFAULT_PRECISION);
 
   /**
    * Single parameter constructors constructs instance with default decimal places
@@ -37,6 +36,14 @@ public class Rate extends DecimalRounded<Rate> {
   }
 
   public Rate(double value) {
+    super(value,DEFAULT_PRECISION);
+  }
+
+  public Rate(long value, int decimalPlaces) {
+    super(value,decimalPlaces);
+  }
+
+  public Rate(long value) {
     super(value,DEFAULT_PRECISION);
   }
 

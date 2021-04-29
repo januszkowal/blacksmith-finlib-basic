@@ -174,35 +174,8 @@ public abstract class DecimalRounded<T extends DecimalRounded<T>>
     return value;
   }
 
-  @Override
-  public String toString() {
-    return this.value.toPlainString();
-  }
-
   public double doubleValue() {
     return this.value.doubleValue();
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || !DecimalRounded.class.isAssignableFrom(o.getClass())) {
-      return false;
-    }
-    final DecimalRounded<?> dr = (DecimalRounded<?>) o;
-    return value.compareTo(dr.value) == 0;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(value);
-  }
-
-  @Override
-  public int compareTo(DecimalRounded o) {
-    return this.value.compareTo(o.value);
   }
 
   public int decimalPlaces() {
@@ -235,5 +208,32 @@ public abstract class DecimalRounded<T extends DecimalRounded<T>>
 
   public static <T extends DecimalRounded<T>> T max(T v1, T v2) {
     return v1.compareTo(v2) > 0 ? v1 : v2;
+  }
+
+  @Override
+  public int compareTo(DecimalRounded o) {
+    return this.value.compareTo(o.value);
+  }
+
+  @Override
+  public String toString() {
+    return this.value.toPlainString();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || !DecimalRounded.class.isAssignableFrom(o.getClass())) {
+      return false;
+    }
+    final DecimalRounded<?> dr = (DecimalRounded<?>) o;
+    return value.compareTo(dr.value) == 0;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
   }
 }
