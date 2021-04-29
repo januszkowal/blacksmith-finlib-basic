@@ -2,7 +2,7 @@ package org.blacksmith.finlib.basic.accounting;
 
 import java.math.BigDecimal;
 
-public interface ICreditDebit {//<T extends ICreditDebit<T>> {
+public interface ICreditDebit <T extends ICreditDebit<T>> {
   BigDecimal getCr();
   BigDecimal getDt();
 
@@ -10,14 +10,14 @@ public interface ICreditDebit {//<T extends ICreditDebit<T>> {
     return getCr().equals(BigDecimal.ZERO) && getDt().equals(BigDecimal.ZERO);
   }
 
-  ICreditDebit add(ICreditDebit other);
-  ICreditDebit add(BigDecimal ocr, BigDecimal odt);
+  T add(ICreditDebit other);
+  T add(BigDecimal ocr, BigDecimal odt);
 
-  ICreditDebit subtract(ICreditDebit other);
-  ICreditDebit subtract(BigDecimal ocr, BigDecimal odt);
+  T subtract(ICreditDebit other);
+  T subtract(BigDecimal ocr, BigDecimal odt);
 
-  ICreditDebit swap();
-  ICreditDebit negate();
+  T swap();
+  T negate();
 
-  ICreditDebit clone();
+  T clone();
 }

@@ -8,7 +8,7 @@ import org.blacksmith.commons.arg.ArgChecker;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class CreditDebit implements ICreditDebit {
+public class CreditDebit implements ICreditDebit<CreditDebit> {
 
   private final BigDecimal cr;
   private final BigDecimal dt;
