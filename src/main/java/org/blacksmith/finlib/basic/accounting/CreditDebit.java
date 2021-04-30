@@ -7,7 +7,9 @@ import org.blacksmith.commons.arg.ArgChecker;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@JsonPropertyOrder({"cr", "dt"})
 public class CreditDebit implements ICreditDebit<CreditDebit> {
 
   private final BigDecimal cr;
