@@ -29,10 +29,10 @@ dependencies {
     compileOnly libs.lombok
     annotationProcessor libs.lombok
     implementation libs.blacksmithCommons
-    compile libs.slf4jApi
-    compile libs.jackson
-    testCompile libs.logback
-    testCompile libs.mockito
+    implementation libs.slf4jApi
+    implementation libs.jackson
+    testImplementation libs.logback
+    testImplementation libs.mockito
     testImplementation libs.junit
     testImplementation libs.blacksmithTest
     testImplementation libs.apacheCommonsMath

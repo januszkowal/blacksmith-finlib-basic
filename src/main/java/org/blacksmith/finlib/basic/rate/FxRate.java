@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.Objects;
 import lombok.Getter;
-import org.apache.commons.lang3.Validate;
+import org.blacksmith.commons.arg.ArgChecker;
 import org.blacksmith.finlib.basic.currency.Currency;
 import org.blacksmith.finlib.basic.numbers.Rate;
 
@@ -15,9 +15,9 @@ public class FxRate implements Comparable<FxRate>{
   private final Rate rate;
 
   public FxRate(Currency ccy1, Currency ccy2, Rate rate) {
-    Validate.notNull(ccy1,"Currency 1 must be not null");
-    Validate.notNull(ccy2,"Currency 2 must be not null");
-    Validate.notNull(rate,"Rate must be not null");
+    ArgChecker.notNull(ccy1,"Currency 1 must be not null");
+    ArgChecker.notNull(ccy2,"Currency 2 must be not null");
+    ArgChecker.notNull(rate,"Rate must be not null");
     this.ccy1 = ccy1;
     this.ccy2 = ccy2;
     this.rate = rate;
