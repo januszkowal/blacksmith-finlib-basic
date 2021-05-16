@@ -63,7 +63,7 @@ public class DebitCredit implements IDebitCredit<DebitCredit> {
     return new DebitCredit(dr == null ? BigDecimal.ZERO : dr, cr == null ? BigDecimal.ZERO : cr);
   }
 
-  public static DebitCredit ofdr(BigDecimal dr) {
+  public static DebitCredit ofDr(BigDecimal dr) {
     return new DebitCredit(dr, BigDecimal.ZERO);
   }
 
@@ -90,8 +90,8 @@ public class DebitCredit implements IDebitCredit<DebitCredit> {
   }
 
   @Override
-  public DebitCredit add(BigDecimal augenddr, BigDecimal augendCr) {
-    return DebitCredit.of(this.dr.add(augenddr), this.cr.add(augendCr));
+  public DebitCredit add(BigDecimal augendDr, BigDecimal augendCr) {
+    return DebitCredit.of(this.dr.add(augendDr), this.cr.add(augendCr));
   }
 
   @Override
@@ -100,8 +100,8 @@ public class DebitCredit implements IDebitCredit<DebitCredit> {
   }
 
   @Override
-  public DebitCredit subtract(BigDecimal subtrahenddr, BigDecimal subtrahendCr) {
-    return new DebitCredit(this.dr.subtract(subtrahenddr), this.cr.subtract(subtrahendCr));
+  public DebitCredit subtract(BigDecimal subtrahendDr, BigDecimal subtrahendCr) {
+    return new DebitCredit(this.dr.subtract(subtrahendDr), this.cr.subtract(subtrahendCr));
   }
 
   @Override
