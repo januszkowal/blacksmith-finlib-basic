@@ -9,30 +9,30 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({ "dt", "cr" })
+@JsonPropertyOrder({ "dr", "cr" })
 public class DebitCredit implements IDebitCredit<DebitCredit> {
 
-  private final BigDecimal dt;
+  private final BigDecimal dr;
   private final BigDecimal cr;
 
-  public DebitCredit(BigDecimal dt, BigDecimal cr) {
-    ArgChecker.notNull(dt, "Debit must be not null");
+  public DebitCredit(BigDecimal dr, BigDecimal cr) {
+    ArgChecker.notNull(dr, "Debit must be not null");
     ArgChecker.notNull(cr, "Credit must be not null");
-    this.dt = dt;
+    this.dr = dr;
     this.cr = cr;
   }
 
   public DebitCredit(IDebitCredit value) {
     ArgChecker.notNull(value, "Credit/Debit must be not null");
-    ArgChecker.notNull(value.getDt(), "Debit must be not null");
+    ArgChecker.notNull(value.getDr(), "Debit must be not null");
     ArgChecker.notNull(value.getCr(), "Credit must be not null");
-    this.dt = value.getDt();
+    this.dr = value.getDr();
     this.cr = value.getCr();
   }
 
   @Override
-  public BigDecimal getDt() {
-    return this.dt;
+  public BigDecimal getDr() {
+    return this.dr;
   }
 
   @Override
@@ -47,24 +47,24 @@ public class DebitCredit implements IDebitCredit<DebitCredit> {
   }
 
   @JsonCreator
-  public static DebitCredit of(@JsonProperty("dt") BigDecimal dt, @JsonProperty("cr") BigDecimal cr) {
-    return new DebitCredit(dt, cr);
+  public static DebitCredit of(@JsonProperty("dr") BigDecimal dr, @JsonProperty("cr") BigDecimal cr) {
+    return new DebitCredit(dr, cr);
   }
 
-  public static DebitCredit of(double dt, double cr) {
-    return new DebitCredit(BigDecimal.valueOf(dt), BigDecimal.valueOf(cr));
+  public static DebitCredit of(double dr, double cr) {
+    return new DebitCredit(BigDecimal.valueOf(dr), BigDecimal.valueOf(cr));
   }
 
-  public static DebitCredit of(long dt, long cr) {
-    return new DebitCredit(BigDecimal.valueOf(dt), BigDecimal.valueOf(cr));
+  public static DebitCredit of(long dr, long cr) {
+    return new DebitCredit(BigDecimal.valueOf(dr), BigDecimal.valueOf(cr));
   }
 
-  public static DebitCredit ofNullable(BigDecimal dt, BigDecimal cr) {
-    return new DebitCredit(dt == null ? BigDecimal.ZERO : dt, cr == null ? BigDecimal.ZERO : cr);
+  public static DebitCredit ofNullable(BigDecimal dr, BigDecimal cr) {
+    return new DebitCredit(dr == null ? BigDecimal.ZERO : dr, cr == null ? BigDecimal.ZERO : cr);
   }
 
-  public static DebitCredit ofDt(BigDecimal dt) {
-    return new DebitCredit(dt, BigDecimal.ZERO);
+  public static DebitCredit ofdr(BigDecimal dr) {
+    return new DebitCredit(dr, BigDecimal.ZERO);
   }
 
   public static DebitCredit ofCr(BigDecimal cr) {
@@ -86,32 +86,32 @@ public class DebitCredit implements IDebitCredit<DebitCredit> {
 
   @Override
   public DebitCredit add(IDebitCredit augend) {
-    return DebitCredit.of(this.dt.add(augend.getDt()), this.cr.add(augend.getCr()));
+    return DebitCredit.of(this.dr.add(augend.getDr()), this.cr.add(augend.getCr()));
   }
 
   @Override
-  public DebitCredit add(BigDecimal augendDt, BigDecimal augendCr) {
-    return DebitCredit.of(this.dt.add(augendDt), this.cr.add(augendCr));
+  public DebitCredit add(BigDecimal augenddr, BigDecimal augendCr) {
+    return DebitCredit.of(this.dr.add(augenddr), this.cr.add(augendCr));
   }
 
   @Override
   public DebitCredit subtract(IDebitCredit subtrahend) {
-    return new DebitCredit(this.dt.subtract(subtrahend.getDt()), this.cr.subtract(subtrahend.getCr()));
+    return new DebitCredit(this.dr.subtract(subtrahend.getDr()), this.cr.subtract(subtrahend.getCr()));
   }
 
   @Override
-  public DebitCredit subtract(BigDecimal subtrahendDt, BigDecimal subtrahendCr) {
-    return new DebitCredit(this.dt.subtract(subtrahendDt), this.cr.subtract(subtrahendCr));
+  public DebitCredit subtract(BigDecimal subtrahenddr, BigDecimal subtrahendCr) {
+    return new DebitCredit(this.dr.subtract(subtrahenddr), this.cr.subtract(subtrahendCr));
   }
 
   @Override
   public DebitCredit swap() {
-    return new DebitCredit(this.cr, this.dt);
+    return new DebitCredit(this.cr, this.dr);
   }
 
   @Override
   public DebitCredit negate() {
-    return new DebitCredit(this.dt.negate(), this.cr.negate());
+    return new DebitCredit(this.dr.negate(), this.cr.negate());
   }
 
   @Override
@@ -126,16 +126,16 @@ public class DebitCredit implements IDebitCredit<DebitCredit> {
     if (o == null || getClass() != o.getClass())
       return false;
     DebitCredit that = (DebitCredit) o;
-    return Objects.equals(dt, that.dt) && Objects.equals(cr, that.cr);
+    return Objects.equals(dr, that.dr) && Objects.equals(cr, that.cr);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(dt, cr);
+    return Objects.hash(dr, cr);
   }
 
   @Override
   public String toString() {
-    return "CreditDebit{dt=" + dt + ", cr=" + cr + '}';
+    return "CreditDebit{dr=" + dr + ", cr=" + cr + '}';
   }
 }
