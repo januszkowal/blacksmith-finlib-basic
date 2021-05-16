@@ -33,6 +33,7 @@ dependencies {
     implementation libs.jackson
     testImplementation libs.logback
     testImplementation libs.mockito
+    testImplementation libs.assertj
     testImplementation libs.junit
     testImplementation libs.blacksmithTest
     testImplementation libs.apacheCommonsMath
