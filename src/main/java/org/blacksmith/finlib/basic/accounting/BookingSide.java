@@ -1,8 +1,8 @@
 package org.blacksmith.finlib.basic.accounting;
 
 public enum BookingSide {
-  C("C", 1),
-  D("D", -1);
+  D("D", 1),
+  C("C", -1);
   private final String value;
   private final int sign;
 

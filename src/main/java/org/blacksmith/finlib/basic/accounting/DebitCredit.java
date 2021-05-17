@@ -15,6 +15,8 @@ public class DebitCredit implements IDebitCredit<DebitCredit> {
   private final BigDecimal dr;
   private final BigDecimal cr;
 
+  public static final DebitCredit ZERO = DebitCredit.of(BigDecimal.ZERO, BigDecimal.ZERO);
+
   public DebitCredit(BigDecimal dr, BigDecimal cr) {
     ArgChecker.notNull(dr, "Debit must be not null");
     ArgChecker.notNull(cr, "Credit must be not null");
@@ -29,18 +31,6 @@ public class DebitCredit implements IDebitCredit<DebitCredit> {
     this.dr = value.getDr();
     this.cr = value.getCr();
   }
-
-  @Override
-  public BigDecimal getDr() {
-    return this.dr;
-  }
-
-  @Override
-  public BigDecimal getCr() {
-    return this.cr;
-  }
-
-  public static final DebitCredit ZERO = DebitCredit.of(BigDecimal.ZERO, BigDecimal.ZERO);
 
   public static DebitCredit of(IDebitCredit value) {
     return new DebitCredit(value);
@@ -71,17 +61,27 @@ public class DebitCredit implements IDebitCredit<DebitCredit> {
     return new DebitCredit(BigDecimal.ZERO, cr);
   }
 
-  public static DebitCredit ofAmount(BigDecimal amount) {
-    return amount.signum() > 0 ? new DebitCredit(amount, BigDecimal.ZERO) : new DebitCredit(BigDecimal.ZERO, amount.abs());
+  public static DebitCredit ofValue(BigDecimal value) {
+    return value.signum() > 0 ? new DebitCredit(value, BigDecimal.ZERO) : new DebitCredit(BigDecimal.ZERO, value.abs());
   }
 
-  public static DebitCredit ofAmount(BigDecimal amount, BookingSide side) {
-    return side == BookingSide.D ? new DebitCredit(amount, BigDecimal.ZERO) : new DebitCredit(BigDecimal.ZERO, amount);
+  public static DebitCredit ofValue(BigDecimal value, BookingSide side) {
+    return side == BookingSide.D ? new DebitCredit(value, BigDecimal.ZERO) : new DebitCredit(BigDecimal.ZERO, value);
   }
 
-  public static DebitCredit ofAmountWithAlign(BigDecimal amount, BookingSide side) {
-    return amount.signum() * side.sign() > 0 ?
-        new DebitCredit(amount.abs(), BigDecimal.ZERO) : new DebitCredit(BigDecimal.ZERO, amount.abs());
+  public static DebitCredit ofValueWithAlign(BigDecimal value, BookingSide side) {
+    return value.signum() * side.sign() > 0 ?
+        new DebitCredit(value.abs(), BigDecimal.ZERO) : new DebitCredit(BigDecimal.ZERO, value.abs());
+  }
+
+  @Override
+  public BigDecimal getDr() {
+    return this.dr;
+  }
+
+  @Override
+  public BigDecimal getCr() {
+    return this.cr;
   }
 
   @Override
