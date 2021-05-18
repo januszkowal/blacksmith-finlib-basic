@@ -21,10 +21,12 @@ public class RateTest {
   public void testMultiply() {
     Assertions.assertEquals(6.246912d, Rate.of(3.123456d).multiply(2).doubleValue());
     Assertions.assertEquals(0.312345679d, Rate.of(3.123456789d).multiply(Rate.of(0.1d)).doubleValue());
+    Assertions.assertEquals(0.3123456789d, Rate.of(3.123456789d).multiply(Rate.of(0.1d), 10).doubleValue());
     Assertions.assertEquals(0.31234567d, Rate.of(3.1234567d,8).multiply(Rate.of(0.1d)).doubleValue());
     Assertions.assertEquals(0.3123457d, Rate.of(3.1234567d,7).multiply(Rate.of(0.1d)).doubleValue());
     Assertions.assertEquals(0.312346d, Rate.of(3.1234567d,6).multiply(Rate.of(0.1d)).doubleValue());
     Assertions.assertEquals(0.3123, Rate.of(3.1234d,4).multiply(Rate.of(0.1d)).doubleValue());
+    Assertions.assertEquals(0.31234, Rate.of(3.1234d,4).multiply(Rate.of(0.1d), 5).doubleValue());
   }
 
 }

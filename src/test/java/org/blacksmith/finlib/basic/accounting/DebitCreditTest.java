@@ -10,30 +10,30 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DebitCreditTest {
   @Test
   public void testOfAmount1() {
-    DebitCredit a1 = DebitCredit.ofAmount(BigDecimal.ONE);
+    DebitCredit a1 = DebitCredit.ofValue(BigDecimal.ONE);
     Assertions.assertEquals(BigDecimal.ONE, a1.getDr());
     Assertions.assertEquals(BigDecimal.ZERO, a1.getCr());
-    DebitCredit a2 = DebitCredit.ofAmount(BigDecimal.ONE.negate());
+    DebitCredit a2 = DebitCredit.ofValue(BigDecimal.ONE.negate());
     Assertions.assertEquals(BigDecimal.ONE, a2.getCr());
     Assertions.assertEquals(BigDecimal.ZERO, a2.getDr());
   }
 
   @Test
   public void testOfAmount2() {
-    DebitCredit a1 = DebitCredit.ofAmount(BigDecimal.ONE, BookingSide.C);
+    DebitCredit a1 = DebitCredit.ofValue(BigDecimal.ONE, BookingSide.C);
     Assertions.assertEquals(BigDecimal.ONE, a1.getCr());
     Assertions.assertEquals(BigDecimal.ZERO, a1.getDr());
-    DebitCredit a2 = DebitCredit.ofAmount(BigDecimal.ONE.negate(), BookingSide.C);
+    DebitCredit a2 = DebitCredit.ofValue(BigDecimal.ONE.negate(), BookingSide.C);
     Assertions.assertEquals(BigDecimal.ONE.negate(), a2.getCr());
     Assertions.assertEquals(BigDecimal.ZERO, a2.getDr());
   }
 
   @Test
   public void testOfAmountWithAllign() {
-    DebitCredit cd1 = DebitCredit.ofAmountWithAlign(BigDecimal.ONE, BookingSide.C);
+    DebitCredit cd1 = DebitCredit.ofValueWithAlign(BigDecimal.ONE, BookingSide.C);
     Assertions.assertEquals(BigDecimal.ZERO, cd1.getCr());
     Assertions.assertEquals(BigDecimal.ONE, cd1.getDr());
-    DebitCredit a2 = DebitCredit.ofAmountWithAlign(BigDecimal.ONE.negate(), BookingSide.D);
+    DebitCredit a2 = DebitCredit.ofValueWithAlign(BigDecimal.ONE.negate(), BookingSide.D);
     Assertions.assertEquals(BigDecimal.ZERO, a2.getCr());
     Assertions.assertEquals(BigDecimal.ONE, a2.getDr());
   }

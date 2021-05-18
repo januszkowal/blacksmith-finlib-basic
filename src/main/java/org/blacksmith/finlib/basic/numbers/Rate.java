@@ -6,7 +6,7 @@ public class Rate extends DecimalRounded<Rate> {
 
   public static final int DEFAULT_PRECISION = 9;
 
-  public static final Rate ZERO = new Rate(BigDecimal.ZERO,DEFAULT_PRECISION);
+  public static final Rate ZERO = new Rate(BigDecimal.ZERO, DEFAULT_PRECISION);
   public static final Rate ONE = new Rate(BigDecimal.ONE, DEFAULT_PRECISION);
 
   /**
@@ -16,43 +16,43 @@ public class Rate extends DecimalRounded<Rate> {
    */
 
   public Rate(DecimalRounded<?> value) {
-    super(value,value.decimalPlaces());
+    super(value, value.decimalPlaces());
   }
 
   public Rate(DecimalRounded<?> value, int decimalPlaces) {
-    super(value,decimalPlaces);
+    super(value, decimalPlaces);
   }
 
   public Rate(BigDecimal value, int decimalPlaces) {
-    super(value,decimalPlaces);
+    super(value, decimalPlaces);
   }
 
   public Rate(BigDecimal value) {
-    super(value,DEFAULT_PRECISION);
+    super(value, DEFAULT_PRECISION);
   }
 
   public Rate(double value, int decimalPlaces) {
-    super(value,decimalPlaces);
+    super(value, decimalPlaces);
   }
 
   public Rate(double value) {
-    super(value,DEFAULT_PRECISION);
+    super(value, DEFAULT_PRECISION);
   }
 
   public Rate(long value, int decimalPlaces) {
-    super(value,decimalPlaces);
+    super(value, decimalPlaces);
   }
 
   public Rate(long value) {
-    super(value,DEFAULT_PRECISION);
+    super(value, DEFAULT_PRECISION);
   }
 
   public Rate(String value, int decimalPlaces) {
-    super(value,decimalPlaces);
+    super(value, decimalPlaces);
   }
 
   public Rate(String value) {
-    super(value,DEFAULT_PRECISION);
+    super(value, DEFAULT_PRECISION);
   }
 
   public static Rate of(DecimalRounded<?> value, int decimalPlaces) {
@@ -72,7 +72,7 @@ public class Rate extends DecimalRounded<Rate> {
   }
 
   public static Rate of(String value, int decimalPlaces) {
-    return new Rate(value,decimalPlaces);
+    return new Rate(value, decimalPlaces);
   }
 
   public static Rate of(String value) {
@@ -97,6 +97,6 @@ public class Rate extends DecimalRounded<Rate> {
 
   @Override
   protected Rate create(BigDecimal value, int decimalPlaces) {
-    return new Rate(value,decimalPlaces);
+    return new Rate(value, decimalPlaces);
   }
 }
