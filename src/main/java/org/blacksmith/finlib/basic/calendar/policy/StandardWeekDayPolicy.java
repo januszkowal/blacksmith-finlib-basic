@@ -2,6 +2,7 @@ package org.blacksmith.finlib.basic.calendar.policy;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+
 import org.blacksmith.finlib.basic.calendar.HolidayPolicy;
 
 public enum StandardWeekDayPolicy implements HolidayPolicy {
@@ -10,7 +11,7 @@ public enum StandardWeekDayPolicy implements HolidayPolicy {
   THU_FRI(DayOfWeek.THURSDAY, DayOfWeek.FRIDAY);
   private final WeekDayPolicy weekDayPolicy;
 
-  StandardWeekDayPolicy(DayOfWeek...weekendDays) {
+  StandardWeekDayPolicy(DayOfWeek... weekendDays) {
     this.weekDayPolicy = WeekDayPolicy.of(weekendDays);
   }
 

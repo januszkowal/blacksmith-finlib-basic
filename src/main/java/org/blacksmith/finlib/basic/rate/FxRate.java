@@ -12,6 +12,10 @@ import lombok.Getter;
 
 @Getter
 public class FxRate implements Comparable<FxRate> {
+  private static final Comparator<FxRate> FX_RATE_COMPARATOR =
+      Comparator.comparing(FxRate::getCcy1)
+          .thenComparing(FxRate::getCcy2)
+          .thenComparing(FxRate::getRate);
   private final Currency ccy1;
   private final Currency ccy2;
   private final Rate rate;
@@ -34,6 +38,11 @@ public class FxRate implements Comparable<FxRate> {
   }
 
   @Override
+  public int hashCode() {
+    return Objects.hash(ccy1, ccy2, rate);
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (this == o)
       return true;
@@ -46,11 +55,6 @@ public class FxRate implements Comparable<FxRate> {
   }
 
   @Override
-  public int hashCode() {
-    return Objects.hash(ccy1, ccy2, rate);
-  }
-
-  @Override
   public String toString() {
     return "FxRate{" +
         "ccy1=" + ccy1 +
@@ -58,11 +62,6 @@ public class FxRate implements Comparable<FxRate> {
         ", rate=" + rate +
         '}';
   }
-
-  private static final Comparator<FxRate> FX_RATE_COMPARATOR =
-      Comparator.comparing(FxRate::getCcy1)
-          .thenComparing(FxRate::getCcy2)
-          .thenComparing(FxRate::getRate);
 
   @Override
   public int compareTo(FxRate o) {

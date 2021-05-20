@@ -1,6 +1,7 @@
 package org.blacksmith.finlib.basic.calendar.policy;
 
 import java.time.LocalDate;
+
 import org.blacksmith.finlib.basic.calendar.HolidayPolicy;
 import org.blacksmith.finlib.basic.calendar.policy.helper.DatePartExtractor;
 import org.blacksmith.finlib.basic.calendar.policy.helper.DatePartProvider;
@@ -9,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Holiday policy containing set of holidays - it's a template for week day, day of month, day of year policy
- * */
+ */
 public class DatePartHolidayPolicy<U> implements HolidayPolicy {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DatePartHolidayPolicy.class);
@@ -21,14 +22,14 @@ public class DatePartHolidayPolicy<U> implements HolidayPolicy {
     this.provider = provider;
   }
 
-  public static <U> DatePartHolidayPolicy<U> of (DatePartExtractor<U> converter, DatePartProvider<U> provider) {
-    return new DatePartHolidayPolicy<>(converter,provider);
+  public static <U> DatePartHolidayPolicy<U> of(DatePartExtractor<U> converter, DatePartProvider<U> provider) {
+    return new DatePartHolidayPolicy<>(converter, provider);
   }
 
   @Override
   public boolean isHoliday(LocalDate date) {
     boolean result = provider.contains(extractor.extract(date));
-    LOGGER.debug("Check isHoliday date={}, result={}, class={}",date,result,this);
+    LOGGER.debug("Check isHoliday date={}, result={}, class={}", date, result, this);
     return result;
   }
 }

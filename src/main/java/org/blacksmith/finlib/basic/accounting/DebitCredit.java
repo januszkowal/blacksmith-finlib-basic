@@ -12,10 +12,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({ "dr", "cr" })
 public class DebitCredit implements IDebitCredit<DebitCredit> {
 
+  public static final DebitCredit ZERO = DebitCredit.of(BigDecimal.ZERO, BigDecimal.ZERO);
   private final BigDecimal dr;
   private final BigDecimal cr;
-
-  public static final DebitCredit ZERO = DebitCredit.of(BigDecimal.ZERO, BigDecimal.ZERO);
 
   public DebitCredit(BigDecimal dr, BigDecimal cr) {
     ArgChecker.notNull(dr, "Debit must be not null");
@@ -115,8 +114,8 @@ public class DebitCredit implements IDebitCredit<DebitCredit> {
   }
 
   @Override
-  public DebitCredit clone() {
-    return new DebitCredit(this);
+  public int hashCode() {
+    return Objects.hash(dr, cr);
   }
 
   @Override
@@ -130,8 +129,8 @@ public class DebitCredit implements IDebitCredit<DebitCredit> {
   }
 
   @Override
-  public int hashCode() {
-    return Objects.hash(dr, cr);
+  public DebitCredit clone() {
+    return new DebitCredit(this);
   }
 
   @Override

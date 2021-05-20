@@ -11,10 +11,11 @@ public class HalfDownRounding implements Rounding {
 
   private final int decimalPlaces;
 
-  static {
-    for (int i = 0; i < CACHE_SIZE; i++) {
-      CACHE[i] = new HalfDownRounding(i + MIN_DECIMAL_PLACES);
+  public HalfDownRounding(int decimalPlaces) {
+    if (decimalPlaces < -15 || decimalPlaces > 255) {
+      throw new IllegalArgumentException("Invalid decimal places, must be from -15 to 255 inclusive");
     }
+    this.decimalPlaces = decimalPlaces;
   }
 
   public static HalfDownRounding ofDecimalPlaces(int decimalPlaces) {
@@ -24,17 +25,18 @@ public class HalfDownRounding implements Rounding {
     return new HalfDownRounding(decimalPlaces);
   }
 
-  public HalfDownRounding(int decimalPlaces) {
-    if (decimalPlaces < -15 || decimalPlaces > 255) {
-      throw new IllegalArgumentException("Invalid decimal places, must be from -15 to 255 inclusive");
-    }
-    this.decimalPlaces = decimalPlaces;
-  }
-
-
   @Override
   public BigDecimal round(BigDecimal value) {
     return value.setScale(decimalPlaces, java.math.RoundingMode.DOWN);
+  }
+
+  public int getDecimalPlaces() {
+    return decimalPlaces;
+  }
+
+  @Override
+  public int hashCode() {
+    return (this.decimalPlaces << 16);
   }
 
   @Override
@@ -49,23 +51,17 @@ public class HalfDownRounding implements Rounding {
       return false;
     }
     HalfDownRounding other = (HalfDownRounding) obj;
-    if (decimalPlaces != other.decimalPlaces) {
-      return false;
-    }
-    return true;
-  }
-
-  public int getDecimalPlaces() {
-    return decimalPlaces;
-  }
-
-  @Override
-  public int hashCode() {
-    return (this.decimalPlaces << 16);
+    return decimalPlaces == other.decimalPlaces;
   }
 
   @Override
   public String toString() {
     return "Truncate to " + decimalPlaces + "dp";
+  }
+
+  static {
+    for (int i = 0; i < CACHE_SIZE; i++) {
+      CACHE[i] = new HalfDownRounding(i + MIN_DECIMAL_PLACES);
+    }
   }
 }

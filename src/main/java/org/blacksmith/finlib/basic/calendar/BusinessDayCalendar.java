@@ -2,6 +2,7 @@ package org.blacksmith.finlib.basic.calendar;
 
 import java.time.LocalDate;
 import java.util.stream.Stream;
+
 import org.blacksmith.commons.arg.ArgChecker;
 import org.blacksmith.commons.datetime.DateRange;
 import org.blacksmith.commons.datetime.DateUtils;
@@ -64,7 +65,7 @@ public interface BusinessDayCalendar {
    * <p>
    * Given a date, this method returns the next business day.
    *
-   * @param date  the date to adjust
+   * @param date the date to adjust
    * @return the first business day after the input date
    * @throws IllegalArgumentException if the calculation is outside the supported range
    */
@@ -101,7 +102,7 @@ public interface BusinessDayCalendar {
    * If the input date is a business day, it is returned.
    * Otherwise, the next business day is returned.
    *
-   * @param date  the date to adjust
+   * @param date the date to adjust
    * @return the input date if it is a business day, or the next business day
    * @throws IllegalArgumentException if the calculation is outside the supported range
    */
@@ -122,9 +123,9 @@ public interface BusinessDayCalendar {
    * Note that the result of this method may be earlier than the input date.
    * <p>
    *
-   * @param date  the date to adjust
+   * @param date the date to adjust
    * @return the input date if it is a business day, the next business day if within the same month
-   *   or the last business day of the month
+   * or the last business day of the month
    * @throws IllegalArgumentException if the calculation is outside the supported range
    */
   default LocalDate nextSameOrLastInMonth(LocalDate date) {
@@ -138,7 +139,7 @@ public interface BusinessDayCalendar {
    * <p>
    * Given a date, this method returns the previous business day.
    *
-   * @param date  the date to adjust
+   * @param date the date to adjust
    * @return the first business day before the input date
    * @throws IllegalArgumentException if the calculation is outside the supported range
    */
@@ -175,7 +176,7 @@ public interface BusinessDayCalendar {
    * If the input date is a business day, it is returned.
    * Otherwise, the previous business day is returned.
    *
-   * @param date  the date to adjust
+   * @param date the date to adjust
    * @return the input date if it is a business day, or the previous business day
    * @throws IllegalArgumentException if the calculation is outside the supported range
    */
@@ -196,9 +197,9 @@ public interface BusinessDayCalendar {
    * Note that the result of this method may be earlier than the input date.
    * <p>
    *
-   * @param date  the date to adjust
+   * @param date the date to adjust
    * @return the input date if it is a business day, the next business day if within the same month
-   *   or the last business day of the month
+   * or the last business day of the month
    * @throws IllegalArgumentException if the calculation is outside the supported range
    */
   default LocalDate previousSameOrLastInMonth(LocalDate date) {
@@ -212,7 +213,7 @@ public interface BusinessDayCalendar {
    * <p>
    * This returns true if the date specified is the last valid business day of the month.
    *
-   * @param date  the date to check
+   * @param date the date to check
    * @return true if the specified date is the last business day of the month
    * @throws IllegalArgumentException if the date is outside the supported range
    */
@@ -226,7 +227,7 @@ public interface BusinessDayCalendar {
    * <p>
    * Given a date, this method returns the date of the last business day of the month.
    *
-   * @param date  the date to check
+   * @param date the date to check
    * @return true if the specified date is the last business day of the month
    * @throws IllegalArgumentException if the date is outside the supported range
    */
@@ -270,7 +271,7 @@ public interface BusinessDayCalendar {
    * If the dates are equal, an empty stream is returned.
    * If the end is before the start, an exception is thrown.
    *
-   * @param range  the date range
+   * @param range the date range
    * @return the stream of holidays
    * @throws IllegalArgumentException if either date is outside the supported range
    */
@@ -279,13 +280,14 @@ public interface BusinessDayCalendar {
     return DateUtils.streamOfDates(range)
         .filter(this::isHoliday);
   }
+
   /**
    * Calculates the number of holidays within range.
    * <p>
    * If the dates are equal, an empty stream is returned.
    * If the end is before the start, an exception is thrown.
    *
-   * @param range  the date range
+   * @param range the date range
    * @return the stream of holidays
    * @throws IllegalArgumentException if either date is outside the supported range
    */

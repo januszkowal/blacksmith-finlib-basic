@@ -7,14 +7,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import org.blacksmith.commons.arg.ArgChecker;
 import org.blacksmith.finlib.basic.calendar.HolidayPolicy;
 
 public class ChainedHolidayPolicy implements HolidayPolicy {
-  
+
   private static final String NULL_PROVIDERS_MESSAGE = "Null providers list not allowed";
   private final HolidayPolicy next;
-  
+
   private final List<HolidayPolicy> policies;
 
   public ChainedHolidayPolicy(Collection<HolidayPolicy> policies, HolidayPolicy next) {
@@ -22,39 +23,42 @@ public class ChainedHolidayPolicy implements HolidayPolicy {
     this.next = next;
     this.policies = new ArrayList<>(policies);
   }
-  
-  @Override
-  public boolean isHoliday(LocalDate date) {
-    boolean thisPolicyResult = policies.stream()
-        .map(hp->hp.isHoliday(date))
-        .filter(ih->ih)
-        .findFirst().orElse(false);
-    return thisPolicyResult || Optional.ofNullable(next).map(p->p.isHoliday(date)).orElse(false);
-  }
-  
+
   public static ChainedHolidayPolicyBuilder builder() {
     return new ChainedHolidayPolicyBuilder();
   }
-  
+
+  @Override
+  public boolean isHoliday(LocalDate date) {
+    boolean thisPolicyResult = policies.stream()
+        .map(hp -> hp.isHoliday(date))
+        .filter(ih -> ih)
+        .findFirst().orElse(false);
+    return thisPolicyResult || Optional.ofNullable(next).map(p -> p.isHoliday(date)).orElse(false);
+  }
+
   public static class ChainedHolidayPolicyBuilder {
 
     private Collection<HolidayPolicy> holidayProviders;
     private HolidayPolicy next;
 
-    public ChainedHolidayPolicyBuilder policies(HolidayPolicy...policies) {
+    public ChainedHolidayPolicyBuilder policies(HolidayPolicy... policies) {
       this.holidayProviders = Arrays.stream(policies).collect(Collectors.toList());
       return this;
     }
+
     public ChainedHolidayPolicyBuilder policies(Collection<HolidayPolicy> providers) {
       this.holidayProviders = providers;
       return this;
     }
+
     public ChainedHolidayPolicyBuilder next(HolidayPolicy next) {
       this.next = next;
       return this;
     }
+
     public ChainedHolidayPolicy build() {
-      return new ChainedHolidayPolicy(holidayProviders,next);
+      return new ChainedHolidayPolicy(holidayProviders, next);
     }
   }
 }

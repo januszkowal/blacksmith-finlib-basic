@@ -3,7 +3,7 @@ package org.blacksmith.finlib.basic.rounding;
 import java.math.BigDecimal;
 
 public interface Rounding {
-  
+
   default double round(double value) {
     // conversion to string is required to avoid inexact values
     /* It is important to use one of the following, that guarantees translation double->string-BigDecimal:
@@ -14,5 +14,5 @@ public interface Rounding {
   }
 
   BigDecimal round(BigDecimal value);
-  
+
 }

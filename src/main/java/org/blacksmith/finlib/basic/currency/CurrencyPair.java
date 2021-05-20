@@ -3,9 +3,11 @@ package org.blacksmith.finlib.basic.currency;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.blacksmith.commons.arg.ArgChecker;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import org.blacksmith.commons.arg.ArgChecker;
 
 @Getter
 @EqualsAndHashCode
@@ -23,11 +25,11 @@ public class CurrencyPair {
     this.counter = counter;
   }
 
-  public static CurrencyPair of (String base, String counter) {
-    return new CurrencyPair(Currency.of(base),Currency.of(counter));
+  public static CurrencyPair of(String base, String counter) {
+    return new CurrencyPair(Currency.of(base), Currency.of(counter));
   }
 
-  public static CurrencyPair of (String pair) {
+  public static CurrencyPair of(String pair) {
     ArgChecker.notNull(pair, "pairStr");
     Matcher matcher = REGEX_PATTERN.matcher(pair.toUpperCase(Locale.ENGLISH));
     if (!matcher.matches()) {

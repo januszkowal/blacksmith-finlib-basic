@@ -5,14 +5,12 @@ import java.math.BigDecimal;
 
 public class Amount extends DecimalRounded<Amount> implements Serializable {
 
-  private static final long serialVersionUID = 1L;
-
   public static final int DEFAULT_PRECISION = 2;
-
   public static final Amount ZERO = new Amount(BigDecimal.ZERO, DEFAULT_PRECISION);
   public static final Amount ONE = new Amount(BigDecimal.ONE, DEFAULT_PRECISION);
   public static final Amount TEN = new Amount(BigDecimal.TEN, DEFAULT_PRECISION);
   public static final Amount HUNDRED = new Amount(100, DEFAULT_PRECISION);
+  private static final long serialVersionUID = 1L;
 
   public Amount(DecimalRounded<?> value) {
     super(value, value.decimalPlaces());

@@ -39,14 +39,20 @@ public abstract class DecimalRounded<T extends DecimalRounded<T>>
     this(new BigDecimal(value), decimalPlaces);
   }
 
-  protected abstract T create(BigDecimal value, int decimalPlaces);
-
   public DecimalRounded(double value, int decimalPlaces) {
     this(BigDecimal.valueOf(value), decimalPlaces);
   }
 
   public DecimalRounded(long value, int decimalPlaces) {
     this(BigDecimal.valueOf(value), decimalPlaces);
+  }
+
+  public static <T extends DecimalRounded<T>> T min(T v1, T v2) {
+    return v1.compareTo(v2) > 0 ? v2 : v1;
+  }
+
+  public static <T extends DecimalRounded<T>> T max(T v1, T v2) {
+    return v1.compareTo(v2) > 0 ? v1 : v2;
   }
 
   public T add(BigDecimal augend, int decimalPlaces) {
@@ -93,11 +99,11 @@ public abstract class DecimalRounded<T extends DecimalRounded<T>>
     return subtract(BigDecimal.valueOf(subtrahend), decimalPlaces);
   }
 
+  /* multiply */
+
   public T subtract(double subtrahend) {
     return subtract(subtrahend, decimalPlaces);
   }
-
-  /* multiply */
 
   public T multiply(BigDecimal multiplicand, int decimalPlaces) {
     return create(this.value.multiply(multiplicand), decimalPlaces);
@@ -119,11 +125,11 @@ public abstract class DecimalRounded<T extends DecimalRounded<T>>
     return multiply(new BigDecimal(multiplicand), decimalPlaces);
   }
 
+  /* divide */
+
   public T multiply(double multiplicand) {
     return multiply(multiplicand, decimalPlaces);
   }
-
-  /* divide */
 
   public T divide(BigDecimal divisor, int decimalPlaces) {
     return create(this.value.divide(divisor, decimalPlaces + 1, RoundingMode.HALF_UP), decimalPlaces);
@@ -165,10 +171,6 @@ public abstract class DecimalRounded<T extends DecimalRounded<T>>
     return create(this.value.abs(), this.decimalPlaces);
   }
 
-  private BigDecimal alignBigDecimalValue(BigDecimal value, int decimalPlaces) {
-    return value.setScale(decimalPlaces, RoundingMode.HALF_UP);
-  }
-
   @JsonValue
   public BigDecimal getValue() {
     return value;
@@ -202,22 +204,14 @@ public abstract class DecimalRounded<T extends DecimalRounded<T>>
     return value.signum() <= 0;
   }
 
-  public static <T extends DecimalRounded<T>> T min(T v1, T v2) {
-    return v1.compareTo(v2) > 0 ? v2 : v1;
-  }
-
-  public static <T extends DecimalRounded<T>> T max(T v1, T v2) {
-    return v1.compareTo(v2) > 0 ? v1 : v2;
-  }
-
   @Override
   public int compareTo(DecimalRounded o) {
     return this.value.compareTo(o.value);
   }
 
   @Override
-  public String toString() {
-    return this.value.toPlainString();
+  public int hashCode() {
+    return Objects.hash(value);
   }
 
   @Override
@@ -233,7 +227,13 @@ public abstract class DecimalRounded<T extends DecimalRounded<T>>
   }
 
   @Override
-  public int hashCode() {
-    return Objects.hash(value);
+  public String toString() {
+    return this.value.toPlainString();
+  }
+
+  protected abstract T create(BigDecimal value, int decimalPlaces);
+
+  private BigDecimal alignBigDecimalValue(BigDecimal value, int decimalPlaces) {
+    return value.setScale(decimalPlaces, RoundingMode.HALF_UP);
   }
 }
