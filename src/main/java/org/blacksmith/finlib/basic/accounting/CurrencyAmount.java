@@ -3,6 +3,7 @@ package org.blacksmith.finlib.basic.accounting;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.Objects;
+
 import org.blacksmith.commons.arg.ArgChecker;
 import org.blacksmith.finlib.basic.currency.Currency;
 import org.blacksmith.finlib.basic.numbers.Amount;
@@ -12,38 +13,44 @@ import lombok.Getter;
 @Getter
 public class CurrencyAmount implements Comparable<CurrencyAmount> {
 
-  private final Currency currency;
+  private static final Comparator<CurrencyAmount> CURRENCY_AMOUNT_COMPARATOR =
+      Comparator.comparing(CurrencyAmount::getCurrency)
+          .thenComparing(CurrencyAmount::getAmount);
   private final Amount amount;
+  private final Currency currency;
 
-  public CurrencyAmount(Currency currency, Amount amount) {
-    ArgChecker.notNull(currency, "Currency must be not null");
+  public CurrencyAmount(Amount amount, Currency currency) {
     ArgChecker.notNull(amount, "Amount must be not null");
-    this.currency = currency;
+    ArgChecker.notNull(currency, "Currency must be not null");
     this.amount = amount;
+    this.currency = currency;
   }
 
-  public CurrencyAmount(Currency currency, BigDecimal amount) {
-    ArgChecker.notNull(currency, "Currency must be not null");
+  public static CurrencyAmount of(Amount amount, Currency currency) {
     ArgChecker.notNull(amount, "Amount must be not null");
-    this.currency = currency;
-    this.amount = new Amount(amount);
+    ArgChecker.notNull(currency, "Currency must be not null");
+    return new CurrencyAmount(amount, currency);
   }
 
-  public CurrencyAmount(Currency currency, double amount) {
+  public static CurrencyAmount of(BigDecimal amount, Currency currency) {
+    ArgChecker.notNull(amount, "Amount must be not null");
     ArgChecker.notNull(currency, "Currency must be not null");
-    this.currency = currency;
-    this.amount = new Amount(amount);
+    return new CurrencyAmount(Amount.of(amount), currency);
   }
 
-  public CurrencyAmount(Currency currency, long amount) {
+  public static CurrencyAmount of(double amount, Currency currency) {
     ArgChecker.notNull(currency, "Currency must be not null");
-    this.currency = currency;
-    this.amount = new Amount(amount);
+    return new CurrencyAmount(Amount.of(amount), currency);
+  }
+
+  public static CurrencyAmount of(long amount, Currency currency) {
+    ArgChecker.notNull(currency, "Currency must be not null");
+    return new CurrencyAmount(Amount.of(amount), currency);
   }
 
   public CurrencyAmount add(BigDecimal augend) {
     ArgChecker.notNull(augend, "Augend amount must be not null");
-    return new CurrencyAmount(this.currency, this.amount.add(augend));
+    return new CurrencyAmount(this.amount.add(augend), this.currency);
   }
 
   public CurrencyAmount add(Amount augend) {
@@ -59,7 +66,7 @@ public class CurrencyAmount implements Comparable<CurrencyAmount> {
 
   public CurrencyAmount subtract(BigDecimal subtrahend) {
     ArgChecker.notNull(subtrahend, "Subtrahend amount must be not null");
-    return new CurrencyAmount(this.currency, this.amount.subtract(subtrahend));
+    return new CurrencyAmount(this.amount.subtract(subtrahend), this.currency);
   }
 
   public CurrencyAmount subtract(Amount subtrahend) {
@@ -69,7 +76,7 @@ public class CurrencyAmount implements Comparable<CurrencyAmount> {
 
   public CurrencyAmount multiply(BigDecimal multiplicand) {
     ArgChecker.notNull(multiplicand, "Multiplicand amount must be not null");
-    return new CurrencyAmount(this.currency, this.amount.multiply(multiplicand));
+    return new CurrencyAmount(this.amount.multiply(multiplicand), this.currency);
   }
 
   public CurrencyAmount multiply(double multiplicand) {
@@ -78,7 +85,7 @@ public class CurrencyAmount implements Comparable<CurrencyAmount> {
 
   public CurrencyAmount divide(BigDecimal divisor) {
     ArgChecker.isTrue(divisor.compareTo(BigDecimal.ZERO) != 0, "multiplicand amount must be not zero");
-    return new CurrencyAmount(this.currency, this.amount.divide(divisor));
+    return new CurrencyAmount(this.amount.divide(divisor), this.currency);
   }
 
   public CurrencyAmount divide(double divisor) {
@@ -87,11 +94,16 @@ public class CurrencyAmount implements Comparable<CurrencyAmount> {
   }
 
   public CurrencyAmount negate() {
-    return new CurrencyAmount(this.currency, this.amount.negate());
+    return new CurrencyAmount(this.amount.negate(), this.currency);
   }
 
   public CurrencyAmount abs() {
-    return new CurrencyAmount(this.currency, this.amount.abs());
+    return new CurrencyAmount(this.amount.abs(), this.currency);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(currency, amount);
   }
 
   @Override
@@ -104,15 +116,6 @@ public class CurrencyAmount implements Comparable<CurrencyAmount> {
     return Objects.equals(currency, ca.currency) &&
         Objects.equals(amount, ca.amount);
   }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(currency, amount);
-  }
-
-  private static final Comparator<CurrencyAmount> CURRENCY_AMOUNT_COMPARATOR =
-      Comparator.comparing(CurrencyAmount::getCurrency)
-          .thenComparing(CurrencyAmount::getAmount);
 
   @Override
   public int compareTo(CurrencyAmount o) {

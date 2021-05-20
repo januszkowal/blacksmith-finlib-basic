@@ -1,4 +1,4 @@
-package org.blacksmith.finlib.basic;
+package org.blacksmith.finlib.basic.numbers;
 
 import org.blacksmith.finlib.basic.numbers.Rate;
 import org.junit.jupiter.api.Assertions;
