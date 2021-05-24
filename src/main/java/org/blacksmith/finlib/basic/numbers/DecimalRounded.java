@@ -156,7 +156,7 @@ public abstract class DecimalRounded<T extends DecimalRounded<T>>
   }
 
   public T inverse(int decimalPlaces) {
-    return create(BigDecimal.valueOf(1 / this.value.doubleValue()), decimalPlaces);
+    return create(BigDecimal.ONE.divide(this.value, decimalPlaces+1, RoundingMode.HALF_UP), decimalPlaces);
   }
 
   public T inverse() {

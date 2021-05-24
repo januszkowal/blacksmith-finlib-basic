@@ -8,12 +8,14 @@ import org.blacksmith.commons.arg.ArgChecker;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
 @EqualsAndHashCode
+@ToString
 public class CurrencyPair {
 
-  static final Pattern REGEX_PATTERN = Pattern.compile("([A-Z]{3})/([A-Z]{3})");
+  static final Pattern REGEX_PATTERN = Pattern.compile("([A-Z0-9]{3})/([A-Z0-9]{3})");
 
   private final Currency base;
   private final Currency counter;
