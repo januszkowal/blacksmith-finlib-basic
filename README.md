@@ -1,4 +1,3 @@
 # blacksmith-finlib-commons
-## 1 Calendar
-## 2 Currency
-## 3 Numbers
+## 1 Currency
+## 2 Numbers
