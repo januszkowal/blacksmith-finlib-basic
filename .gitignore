@@ -1,13 +1,11 @@
 # Ignore Gradle project-specific cache directory
-.gradle
+/.gradle/
 
 # Ignore Gradle build output directory
-build
+/gradle/
+/build/
+/out/
 .classpath
 .project
-gradlew
-gradlew.bat
-.settings/
-gradle/
-out/
-.idea/uiDesigner.xml
+.settings
+.idea
