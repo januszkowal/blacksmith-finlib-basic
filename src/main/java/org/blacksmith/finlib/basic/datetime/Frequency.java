@@ -1,16 +1,11 @@
 package org.blacksmith.finlib.basic.datetime;
 
 import java.io.Serializable;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
-import java.util.Locale;
 
 import org.blacksmith.commons.arg.ArgChecker;
-import org.blacksmith.commons.datetime.DateOperation;
-import org.blacksmith.commons.datetime.TimeUnit;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,7 +13,7 @@ import lombok.ToString;
 
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Frequency implements Serializable, DateOperation {
+public final class Frequency implements DateOperationExt, Serializable {
   /**
    * A periodic frequency of one day.
    * Also known as daily.
@@ -154,12 +149,18 @@ public class Frequency implements Serializable, DateOperation {
   private int months;
   private int eventsPerYear;
   private double eventsPerYearEstimate;
+  private Period period;
 
   public Frequency(final Period period) {
+    ArgChecker.isFalse(period.isZero(), "Frequency period must not be zero");
+    ArgChecker.isFalse(period.isNegative(), "Frequency period must not be negative");
     //TODO multi-unit periods
-    if (period.getUnits().size() > 0 && period.getDays() > 0) {
+    if (period.getUnits().size() > 1) {
       throw new IllegalArgumentException("Multiple unit period not supported");
     }
+//    if (period.getUnits().size() > 0 && period.getDays() > 0) {
+//      throw new IllegalArgumentException("Multiple unit period not supported");
+//    }
     if (period.getYears() > 0) {
       if (period.getMonths() == 0) {
         this.unit = TimeUnit.YEAR;
@@ -175,6 +176,7 @@ public class Frequency implements Serializable, DateOperation {
       this.unit = TimeUnit.DAY;
       this.amount = period.getDays();
     }
+    this.period = frequencyToPeriod(this.amount, this.unit);
     setEvents();
   }
 
@@ -182,6 +184,7 @@ public class Frequency implements Serializable, DateOperation {
     this.unit = unit;
     this.amount = amount;
     this.name = periodName(this.amount, this.unit);
+    this.period = frequencyToPeriod(this.amount, this.unit);
     setEvents();
   }
 
@@ -189,6 +192,8 @@ public class Frequency implements Serializable, DateOperation {
     this.unit = unit;
     this.amount = amount;
     this.name = name;
+    this.period = frequencyToPeriod(this.amount, this.unit);
+    setEvents();
   }
 
   public static Frequency of(String period) {
@@ -266,7 +271,7 @@ public class Frequency implements Serializable, DateOperation {
           return P6M;
         default:
           if (months > MAX_MONTHS) {
-            throw new IllegalArgumentException(maxMonthMsg());
+            throw new IllegalArgumentException(FrequencyUtils.maxMonthMsg(MAX_MONTHS));
           }
           return new Frequency(months, TimeUnit.MONTH);
       }
@@ -292,22 +297,10 @@ public class Frequency implements Serializable, DateOperation {
         return P5Y;
       default:
         if (years > MAX_YEARS) {
-          throw new IllegalArgumentException(maxYearMsg());
+          throw new IllegalArgumentException(FrequencyUtils.maxYearMsg(MAX_YEARS));
         }
         return new Frequency(years, TimeUnit.YEAR);
     }
-  }
-
-  // extracted to aid inlining
-  private static String maxYearMsg() {
-    DecimalFormat formatter = new DecimalFormat("#,###", new DecimalFormatSymbols(Locale.ENGLISH));
-    return "Years must not exceed " + formatter.format(MAX_YEARS);
-  }
-
-  // extracted to aid inlining
-  private static String maxMonthMsg() {
-    DecimalFormat formatter = new DecimalFormat("#,###", new DecimalFormatSymbols(Locale.ENGLISH));
-    return "Months must not exceed " + formatter.format(MAX_MONTHS);
   }
 
   public static Period frequencyToPeriod(final int amount, final TimeUnit unit) {
@@ -355,39 +348,56 @@ public class Frequency implements Serializable, DateOperation {
   }
 
   @Override
-  public <T extends Temporal> T addTo(T t, int i) {
-    return this.unit.addTo(t, i * amount);
+  public <T extends Temporal> T addTo(T temporal) {
+//    return (T)this.period.addTo(temporal);
+    return this.unit.addTo(temporal, amount);
   }
 
   @Override
-  public <T extends Temporal> T addToWithEomAdjust(T t, int i, boolean eomAadjust) {
-    return this.unit.addToWithEomAdjust(t, i * amount, eomAadjust);
+  public <T extends Temporal> T addTo(T temporal, int i) {
+    return this.unit.addTo(temporal, i * amount);
   }
 
   @Override
-  public <T extends Temporal> T minusFrom(T t, int i) {
-    return this.unit.minusFrom(t, i * amount);
+  public <T extends Temporal> T addToWithEomAdjust(T temporal, boolean eomAadjust) {
+    return (T)this.unit.addToWithEomAdjust(temporal, amount, eomAadjust);
+  }
+
+  @Override
+  public <T extends Temporal> T addToWithEomAdjust(T temporal, int i, boolean eomAadjust) {
+    return (T)this.unit.addToWithEomAdjust(temporal, i * amount, eomAadjust);
+  }
+
+  @Override
+  public <T extends Temporal> T subtractFrom(T temporal) {
+    return this.unit.subtractFrom(temporal, amount);
+  }
+
+  @Override
+  public <T extends Temporal> T subtractFrom(T temporal, int i) {
+//        return (T)this.period.subtractFrom(temporal);
+    return this.unit.subtractFrom(temporal, i * amount);
   }
 
   private void setEvents() {
     if (amount == 0) {
       return;
     }
-    double secs = 0d;
-    //    this.period = frequencyToPeriod(this.amount,this.unit);
+    this.period = frequencyToPeriod(this.amount, this.unit);
+    long unitSecs = 0;
     switch (unit) {
       case DAY:
-        secs = amount * ChronoUnit.DAYS.getDuration().getSeconds();
+        unitSecs = amount * ChronoUnit.DAYS.getDuration().getSeconds();
         eventsPerYear = (364 % amount == 0) ? 364 / amount : 0;
         eventsPerYearEstimate = 364d / amount;
-        //eventsPerYearEstimate = ChronoUnit.YEARS.getDuration().getSeconds() / secs;
+        //eventsPerYearEstimate = ChronoUnit.YEARS.getDuration().getSeconds() / unitSecs;
         break;
       case WEEK:
-        secs = amount * ChronoUnit.WEEKS.getDuration().getSeconds();
+        unitSecs = amount * ChronoUnit.WEEKS.getDuration().getSeconds();
         int days = amount * 7;
         eventsPerYear = (364 % days == 0) ? 364 / days : 0;
         eventsPerYearEstimate = 364d / days;
-        //eventsPerYearEstimate = ChronoUnit.YEARS.getDuration().getSeconds() / secs;
+        //eventsPerYearEstimate = ChronoUnit.YEARS.getDuration().getSeconds() / unitSecs;
         break;
       case MONTH:
         isAnnual = amount % 12 == 0;
