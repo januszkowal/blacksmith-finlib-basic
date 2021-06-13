@@ -1,5 +1,6 @@
 package org.blacksmith.finlib.basic.datetime;
 
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 
@@ -40,8 +41,23 @@ public enum TimeUnit implements DateOperationExt {
   }
 
   @Override
+  public <T extends Temporal> T subtractFrom(T temporal) {
+    return chronoUnit.addTo(temporal, -chronoUnitCount);
+  }
+
+  @Override
   public <T extends Temporal> T addTo(T temporal, int q) {
-    return chronoUnit.addTo(temporal,  q * chronoUnitCount);
+    return chronoUnit.addTo(temporal, q * chronoUnitCount);
+  }
+
+  @Override
+  public <T extends Temporal> T subtractFrom(T temporal, int q) {
+    return chronoUnit.addTo(temporal, -q * chronoUnitCount);
+  }
+
+  @Override
+  public <T extends Temporal> T addToWithEomAdjust(T temporal, boolean eomAdjust) {
+    return addToWithEomAdjust(temporal, 1, eomAdjust);
   }
 
   @Override
@@ -54,21 +70,6 @@ public enum TimeUnit implements DateOperationExt {
     } else {
       return chronoUnit.addTo(temporal, chronoUnitCount);
     }
-  }
-
-  @Override
-  public <T extends Temporal> T addToWithEomAdjust(T temporal, boolean eomAdjust) {
-    return addToWithEomAdjust(temporal, 1, eomAdjust);
-  }
-
-  @Override
-  public <T extends Temporal> T subtractFrom(T temporal) {
-    return chronoUnit.addTo(temporal, -chronoUnitCount);
-  }
-
-  @Override
-  public <T extends Temporal> T subtractFrom(T temporal, int q) {
-    return chronoUnit.addTo(temporal, - q * chronoUnitCount);
   }
 
   public String symbol() {
@@ -85,5 +86,22 @@ public enum TimeUnit implements DateOperationExt {
 
   public int chronoUnitCount() {
     return this.chronoUnitCount;
+  }
+
+  public Period toPeriod(int amount) {
+    switch (this) {
+      case DAY:
+        return Period.ofDays(amount * chronoUnitCount);
+      case WEEK:
+        return Period.ofWeeks(amount * chronoUnitCount);
+      case MONTH:
+      case QUARTER:
+      case HALF_YEAR:
+        return Period.ofMonths(amount * chronoUnitCount);
+      case YEAR:
+        return Period.ofYears(amount * chronoUnitCount);
+      default:
+        return null;
+    }
   }
 }
