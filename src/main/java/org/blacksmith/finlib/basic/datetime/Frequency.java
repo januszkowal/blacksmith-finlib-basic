@@ -21,8 +21,6 @@ public final class Frequency implements DateOperationExt, Serializable {
    * A periodic frequency of one day, also known as daily
    */
   public static final Frequency P1D = addFrequency(1, TimeUnit.DAY);
-
-  ;
   /**
    * A periodic frequency of two days.
    */
