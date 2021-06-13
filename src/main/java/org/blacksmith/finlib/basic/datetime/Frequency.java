@@ -197,7 +197,7 @@ public final class Frequency implements DateOperationExt, Serializable {
     }
   }
 
-  public static synchronized Frequency createIfNotExists(int amount, TimeUnit unit) {
+  public static Frequency createIfNotExists(int amount, TimeUnit unit) {
     String name = frequencyName(amount, unit);
     Frequency frequency = frequencyMap.get(name);
     if (frequency == null) {
