@@ -43,7 +43,7 @@ public class FrequencyTest {
     assertEquals(12 / 24d, Frequency.ofMonths(24).eventsPerYearEstimate(), 0d);
     //
     assertEquals(1, Frequency.ofYears(1).eventsPerYear());
-    assertEquals(1d, Frequency.ofYears(1).eventsPerYearEstimate(), 0d);
+    assertEquals(1, Frequency.ofYears(1).eventsPerYearEstimate(), 0d);
     assertEquals(0, Frequency.ofYears(3).eventsPerYear());
     assertEquals(1 / 3d, Frequency.ofYears(3).eventsPerYearEstimate(), 0d);
     //
@@ -80,10 +80,10 @@ public class FrequencyTest {
 
   @Test
   public void stringToFrequencyConversion() {
-    assertEquals("P30D", Frequency.of("30D").toPeriod().toString());
-    assertEquals("P14D", Frequency.of("2W").toPeriod().toString());
-    assertEquals("P2M", Frequency.of("2M").toPeriod().toString());
-    assertEquals("P2Y", Frequency.of("2Y").toPeriod().toString());
+    assertEquals("P30D", Frequency.of("P30D").toPeriod().toString());
+    assertEquals("P14D", Frequency.of("P2W").toPeriod().toString());
+    assertEquals("P2M", Frequency.of("P2M").toPeriod().toString());
+    assertEquals("P2Y", Frequency.of("P2Y").toPeriod().toString());
   }
 
   @Test

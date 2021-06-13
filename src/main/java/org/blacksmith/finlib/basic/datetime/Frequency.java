@@ -18,34 +18,27 @@ import lombok.ToString;
 public final class Frequency implements DateOperationExt, Serializable {
   private static final Map<String, Frequency> frequencyMap = new HashMap<>();
   /**
-   * A periodic frequency of one day.
-   * Also known as daily.
-   * There are considered to be 364 events per year with this frequency.
+   * A periodic frequency of one day, also known as daily
    */
   public static final Frequency P1D = addFrequency(1, TimeUnit.DAY);
 
   ;
   /**
-   * A periodic frequency of one day.
-   * Also known as daily.
-   * There are considered to be 364 events per year with this frequency.
+   * A periodic frequency of two days.
    */
   public static final Frequency P2D = addFrequency(2, TimeUnit.DAY);
   /**
-   * A periodic frequency of 1 week (7 days).
-   * Also known as weekly.
+   * A periodic frequency of 1 week (7 days), also known as weekly.
    * There are considered to be 52 events per year with this frequency.
    */
   public static final Frequency P1W = addFrequency(1, TimeUnit.WEEK);
   /**
-   * A periodic frequency of 2 weeks (14 days).
-   * Also known as bi-weekly.
+   * A periodic frequency of 2 weeks (14 days), also known as bi-weekly.
    * There are considered to be 26 events per year with this frequency.
    */
   public static final Frequency P2W = addFrequency(2, TimeUnit.WEEK);
   /**
-   * A periodic frequency of 4 weeks (28 days).
-   * Also known as lunar.
+   * A periodic frequency of 4 weeks (28 days), also known as lunar.
    * There are considered to be 13 events per year with this frequency.
    */
   public static final Frequency P4W = addFrequency(4, TimeUnit.WEEK);
@@ -65,21 +58,17 @@ public final class Frequency implements DateOperationExt, Serializable {
    */
   public static final Frequency P52W = addFrequency(52, TimeUnit.WEEK);
   /**
-   * A periodic frequency of 1 month.
-   * Also known as monthly.
+   * A periodic frequency of 1 month, also known as monthly.
    * There are 12 events per year with this frequency.
    */
   public static final Frequency P1M = addFrequency(1, TimeUnit.MONTH);
-  //  private final Period period;
   /**
-   * A periodic frequency of 2 months.
-   * Also known as bi-monthly.
+   * A periodic frequency of 2 months, also known as bi-monthly.
    * There are 6 events per year with this frequency.
    */
   public static final Frequency P2M = addFrequency(2, TimeUnit.MONTH);
   /**
-   * A periodic frequency of 3 months.
-   * Also known as quarterly.
+   * A periodic frequency of 3 months, also known as quarterly.
    * There are 4 events per year with this frequency.
    */
   public static final Frequency P3M = addFrequency(3, TimeUnit.MONTH);
@@ -89,47 +78,20 @@ public final class Frequency implements DateOperationExt, Serializable {
    */
   public static final Frequency P4M = addFrequency(4, TimeUnit.MONTH);
   /**
-   * A periodic frequency of 6 months.
-   * Also known as semi-annual.
+   * A periodic frequency of 6 months, also known as semi-annual.
    * There are 2 events per year with this frequency.
    */
   public static final Frequency P6M = addFrequency(6, TimeUnit.MONTH);
   /**
    * A periodic frequency of 9 months.
-   * Also known as semi-annual.
    * There are 2 events per year with this frequency.
    */
   public static final Frequency P9M = addFrequency(9, TimeUnit.MONTH);
   /**
-   * A periodic frequency of 12 months (1 year).
-   * Also known as annual.
+   * A periodic frequency of 12 months (1 year), also known as annual.
    * There is 1 event per year with this frequency.
    */
   public static final Frequency P1Y = addFrequency(1, TimeUnit.YEAR);
-  /**
-   * A periodic frequency of 2 years.
-   * Also known as zero-coupon.
-   * There are no events per year with this frequency.
-   */
-  public static final Frequency P2Y = addFrequency(2, TimeUnit.YEAR);
-  /**
-   * A periodic frequency of 3 years.
-   * Also known as zero-coupon.
-   * There are no events per year with this frequency.
-   */
-  public static final Frequency P3Y = addFrequency(3, TimeUnit.YEAR);
-  /**
-   * A periodic frequency of 5 years.
-   * Also known as zero-coupon.
-   * There are no events per year with this frequency.
-   */
-  public static final Frequency P5Y = addFrequency(5, TimeUnit.YEAR);
-  /**
-   * A periodic frequency of 10 years.
-   * Also known as zero-coupon.
-   * There are no events per year with this frequency.
-   */
-  public static final Frequency P10Y = addFrequency(10, TimeUnit.YEAR);
   /**
    * Serialization version.
    */
@@ -152,7 +114,7 @@ public final class Frequency implements DateOperationExt, Serializable {
    * This is represented using the period 10,000 years.
    * There are no events per year with this frequency.
    */
-  public static final Frequency TERM = new Frequency(TERM_YEARS, TimeUnit.YEAR);
+  public static final Frequency TERM = addFrequency(TERM_YEARS, TimeUnit.YEAR, "TERM");
   @EqualsAndHashCode.Include
   private final TimeUnit unit;
   @EqualsAndHashCode.Include
@@ -201,9 +163,20 @@ public final class Frequency implements DateOperationExt, Serializable {
     setEvents();
   }
 
+  private Frequency(final int amount, final TimeUnit unit, String name) {
+    ArgChecker.isTrue(amount > 0, "Amount must be greater than zero");
+    ArgChecker.notNull(unit, "Unit must be not null");
+    this.unit = unit;
+    this.amount = amount;
+    this.name = name;
+    this.period = this.unit.toPeriod(this.amount);
+    setEvents();
+  }
+
   public static Frequency of(String frequency) {
     ArgChecker.checkStringLength(frequency, 3, 10);
-    int amount = Integer.parseInt(frequency, 1, frequency.length() - 2, 10);
+    ArgChecker.isTrue(frequency.substring(0, 1).equals("P"), "Frequency must begins with P");
+    int amount = Integer.parseInt(frequency, 1, frequency.length() - 1, 10);
     TimeUnit unit = TimeUnit.ofSymbol(frequency.substring(frequency.length() - 1));
     return new Frequency(amount, unit);
   }
@@ -289,6 +262,12 @@ public final class Frequency implements DateOperationExt, Serializable {
 
   private static Frequency addFrequency(int amount, TimeUnit unit) {
     Frequency frequency = new Frequency(amount, unit);
+    frequencyMap.put(frequency.name, frequency);
+    return frequency;
+  }
+
+  private static Frequency addFrequency(int amount, TimeUnit unit, String name) {
+    Frequency frequency = new Frequency(amount, unit, name);
     frequencyMap.put(frequency.name, frequency);
     return frequency;
   }
