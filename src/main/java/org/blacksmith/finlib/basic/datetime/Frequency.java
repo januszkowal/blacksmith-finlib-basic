@@ -171,7 +171,7 @@ public final class Frequency implements DateOperationExt, Serializable {
     setEvents();
   }
 
-  public static Frequency of(String frequency) {
+  public static Frequency parse(String frequency) {
     ArgChecker.checkStringLength(frequency, 3, 10);
     ArgChecker.isTrue(frequency.substring(0, 1).equals("P"), "Frequency must begins with P");
     int amount = Integer.parseInt(frequency, 1, frequency.length() - 1, 10);

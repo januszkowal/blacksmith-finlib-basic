@@ -80,10 +80,10 @@ public class FrequencyTest {
 
   @Test
   public void stringToFrequencyConversion() {
-    assertEquals("P30D", Frequency.of("P30D").toPeriod().toString());
-    assertEquals("P14D", Frequency.of("P2W").toPeriod().toString());
-    assertEquals("P2M", Frequency.of("P2M").toPeriod().toString());
-    assertEquals("P2Y", Frequency.of("P2Y").toPeriod().toString());
+    assertEquals("P30D", Frequency.parse("P30D").toPeriod().toString());
+    assertEquals("P14D", Frequency.parse("P2W").toPeriod().toString());
+    assertEquals("P2M", Frequency.parse("P2M").toPeriod().toString());
+    assertEquals("P2Y", Frequency.parse("P2Y").toPeriod().toString());
   }
 
   @Test
