@@ -1,7 +1,5 @@
 package org.blacksmith.finlib.basic.datetime;
 
-
-
 import java.io.Serializable;
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -25,21 +23,13 @@ import org.blacksmith.commons.arg.ArgChecker;
  * thus it is possible to have a tenor of 12 months and a different one of 1 year.
  * When used, standard date addition rules apply, thus there is no difference between them.
  * Call {@link #normalized()} to apply normalization.
- *
  * <h4>Usage</h4>
  * {@code Tenor} implements {@code TemporalAmount} allowing it to be directly added to a date:
  * <pre>
  *  LocalDate later = baseDate.plus(tenor);
  * </pre>
  */
-public final class Tenor
-    implements DateOperation, Comparable<Tenor>, Serializable {
-
-  /**
-   * Serialization version.
-   */
-  private static final long serialVersionUID = 1;
-
+public final class Tenor implements DateOperation, Comparable<Tenor>, Serializable {
   /**
    * A tenor of one day.
    */
@@ -232,7 +222,10 @@ public final class Tenor
    * A tenor of 50 years.
    */
   public static final Tenor TENOR_50Y = ofYears(50);
-
+  /**
+   * Serialization version.
+   */
+  private static final long serialVersionUID = 1;
   /**
    * The period of the tenor.
    */
@@ -243,6 +236,33 @@ public final class Tenor
   private final String name;
 
   //-------------------------------------------------------------------------
+
+  /**
+   * Creates a tenor.
+   *
+   * @param period the period to represent
+   * @param name   the name
+   */
+  private Tenor(Period period, String name) {
+    ArgChecker.notNull(period, "period");
+    ArgChecker.isFalse(period.isZero(), "Tenor period must not be zero");
+    ArgChecker.isFalse(period.isNegative(), "Tenor period must not be negative");
+    this.period = period;
+    this.name = name;
+  }
+
+  /**
+   * Obtains an instance from dates.
+   *
+   * @param startDateInclusive the date when period starts
+   * @param endDateExclusive the date when period ends
+   * @return the tenor
+   * @throws IllegalArgumentException if the period is negative or zero
+   */
+  public static Tenor of(LocalDate startDateInclusive, LocalDate endDateExclusive) {
+    return Tenor.of(Period.between(startDateInclusive, endDateExclusive));
+  }
+
   /**
    * Obtains an instance from a {@code Period}.
    * <p>
@@ -252,7 +272,7 @@ public final class Tenor
    * If the number of days is an exact multiple of 7 it will be converted to weeks.
    * Months are not normalized into years.
    *
-   * @param period  the period to convert to a tenor
+   * @param period the period to convert to a tenor
    * @return the tenor
    * @throws IllegalArgumentException if the period is negative or zero
    */
@@ -270,7 +290,7 @@ public final class Tenor
    * <p>
    * If the number of days is an exact multiple of 7 it will be converted to weeks.
    *
-   * @param days  the number of days
+   * @param days the number of days
    * @return the tenor
    * @throws IllegalArgumentException if days is negative or zero
    */
@@ -284,7 +304,7 @@ public final class Tenor
   /**
    * Obtains an instance backed by a period of weeks.
    *
-   * @param weeks  the number of weeks
+   * @param weeks the number of weeks
    * @return the tenor
    * @throws IllegalArgumentException if weeks is negative or zero
    */
@@ -297,7 +317,7 @@ public final class Tenor
    * <p>
    * Months are not normalized into years.
    *
-   * @param months  the number of months
+   * @param months the number of months
    * @return the tenor
    * @throws IllegalArgumentException if months is negative or zero
    */
@@ -308,13 +328,15 @@ public final class Tenor
   /**
    * Obtains an instance backed by a period of years.
    *
-   * @param years  the number of years
+   * @param years the number of years
    * @return the tenor
    * @throws IllegalArgumentException if years is negative or zero
    */
   public static Tenor ofYears(int years) {
     return new Tenor(Period.ofYears(years), years + "Y");
   }
+
+  //-------------------------------------------------------------------------
 
   //-------------------------------------------------------------------------
   public static Tenor parse(String toParse) {
@@ -326,27 +348,6 @@ public final class Tenor
     }
   }
 
-  //-------------------------------------------------------------------------
-  /**
-   * Creates a tenor.
-   *
-   * @param period  the period to represent
-   * @param name  the name
-   */
-  private Tenor(Period period, String name) {
-    ArgChecker.notNull(period, "period");
-    ArgChecker.isFalse(period.isZero(), "Tenor period must not be zero");
-    ArgChecker.isFalse(period.isNegative(), "Tenor period must not be negative");
-    this.period = period;
-    this.name = name;
-  }
-
-  // safe deserialization
-  private Object readResolve() {
-    return new Tenor(period, name);
-  }
-
-  //-------------------------------------------------------------------------
   /**
    * Gets the underlying period of the tenor.
    *
@@ -357,6 +358,7 @@ public final class Tenor
   }
 
   //-------------------------------------------------------------------------
+
   /**
    * Normalizes the months and years of this tenor.
    * <p>
@@ -375,6 +377,7 @@ public final class Tenor
   }
 
   //-------------------------------------------------------------------------
+
   /**
    * Checks if the tenor is week-based.
    * <p>
@@ -387,6 +390,8 @@ public final class Tenor
     return period.toTotalMonths() == 0 && period.getDays() % 7 == 0;
   }
 
+  //-------------------------------------------------------------------------
+
   /**
    * Checks if the tenor is month-based.
    * <p>
@@ -398,6 +403,22 @@ public final class Tenor
    */
   public boolean isMonthBased() {
     return period.toTotalMonths() > 0 && period.getDays() == 0;
+  }
+
+  /**
+   * Gets the units supported by a tenor.
+   * <p>
+   * This returns a list containing years, months and days.
+   * Note that weeks are not included.
+   * <p>
+   * This method implements {@link TemporalAmount}.
+   * It is not intended to be called directly.
+   *
+   * @return a list containing the years, months and days units
+   */
+  //  @Override
+  public List<TemporalUnit> getUnits() {
+    return period.getUnits();
   }
 
   //-------------------------------------------------------------------------
@@ -415,26 +436,10 @@ public final class Tenor
    * @return the value of the unit
    * @throws UnsupportedTemporalTypeException if the unit is not supported
    */
-//  @Override
-//  public long get(TemporalUnit unit) {
-//    return period.get(unit);
-//  }
-
-  /**
-   * Gets the units supported by a tenor.
-   * <p>
-   * This returns a list containing years, months and days.
-   * Note that weeks are not included.
-   * <p>
-   * This method implements {@link TemporalAmount}.
-   * It is not intended to be called directly.
-   *
-   * @return a list containing the years, months and days units
-   */
-//  @Override
-  public List<TemporalUnit> getUnits() {
-    return period.getUnits();
-  }
+  //  @Override
+  //  public long get(TemporalUnit unit) {
+  //    return period.get(unit);
+  //  }
 
   /**
    * Adds this tenor to the specified date.
@@ -443,9 +448,9 @@ public final class Tenor
    * It is not intended to be called directly.
    * Use {@link LocalDate#plus(TemporalAmount)} instead.
    *
-   * @param temporal  the temporal object to add to
+   * @param temporal the temporal object to add to
    * @return the result with this tenor added
-   * @throws DateTimeException if unable to add
+   * @throws DateTimeException   if unable to add
    * @throws ArithmeticException if numeric overflow occurs
    */
   @Override
@@ -453,9 +458,9 @@ public final class Tenor
     // special case for performance
     if (temporal instanceof LocalDate) {
       LocalDate date = (LocalDate) temporal;
-      return (T)date.plusMonths(period.toTotalMonths()).plusDays(period.getDays());
+      return (T) date.plusMonths(period.toTotalMonths()).plusDays(period.getDays());
     }
-    return (T)period.addTo(temporal);
+    return (T) period.addTo(temporal);
   }
 
   /**
@@ -465,9 +470,9 @@ public final class Tenor
    * It is not intended to be called directly.
    * Use {@link LocalDate#minus(TemporalAmount)} instead.
    *
-   * @param temporal  the temporal object to subtract from
+   * @param temporal the temporal object to subtract from
    * @return the result with this tenor subtracted
-   * @throws DateTimeException if unable to subtract
+   * @throws DateTimeException   if unable to subtract
    * @throws ArithmeticException if numeric overflow occurs
    */
   @Override
@@ -480,7 +485,6 @@ public final class Tenor
     return period.subtractFrom(temporal);
   }
 
-  //-------------------------------------------------------------------------
   /**
    * Compares this tenor to another tenor.
    * <p>
@@ -501,7 +505,7 @@ public final class Tenor
    * <li>a 4 year tenor between 1460 and 1461 days
    * </ul>
    *
-   * @param other  the other tenor
+   * @param other the other tenor
    * @return negative if this is less than the other, zero if equal and positive if greater
    */
   @Override
@@ -524,12 +528,24 @@ public final class Tenor
     return Double.compare(thisDays + thisMonthsInDays, otherDays + otherMonthsInDays);
   }
 
+  //-------------------------------------------------------------------------
+
+  /**
+   * Returns a suitable hash code for the tenor.
+   *
+   * @return the hash code
+   */
+  @Override
+  public int hashCode() {
+    return period.hashCode();
+  }
+
   /**
    * Checks if this tenor equals another tenor.
    * <p>
    * The comparison checks the tenor period.
    *
-   * @param obj  the other tenor, null returns false
+   * @param obj the other tenor, null returns false
    * @return true if equal
    */
   @Override
@@ -545,16 +561,6 @@ public final class Tenor
   }
 
   /**
-   * Returns a suitable hash code for the tenor.
-   *
-   * @return the hash code
-   */
-  @Override
-  public int hashCode() {
-    return period.hashCode();
-  }
-
-  /**
    * Returns a formatted string representing the tenor.
    * <p>
    * The format is a combination of the quantity and unit, such as 1D, 2W, 3M, 4Y.
@@ -564,5 +570,10 @@ public final class Tenor
   @Override
   public String toString() {
     return name;
+  }
+
+  // safe deserialization
+  private Object readResolve() {
+    return new Tenor(period, name);
   }
 }
