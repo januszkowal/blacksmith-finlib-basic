@@ -252,6 +252,18 @@ public final class Tenor implements DateOperation, Comparable<Tenor>, Serializab
   }
 
   /**
+   * Obtains an instance from dates.
+   *
+   * @param startDateInclusive the date when period starts
+   * @param endDateExclusive the date when period ends
+   * @return the tenor
+   * @throws IllegalArgumentException if the period is negative or zero
+   */
+  public static Tenor of(LocalDate startDateInclusive, LocalDate endDateExclusive) {
+    return Tenor.of(Period.between(startDateInclusive, endDateExclusive));
+  }
+
+  /**
    * Obtains an instance from a {@code Period}.
    * <p>
    * The period normally consists of either days and weeks, or months and years.
