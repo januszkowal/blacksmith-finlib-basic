@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({ "dr", "cr" })
-public class DebitCredit implements IDebitCredit<DebitCredit> {
+public class DebitCredit implements IDebitCredit {
 
   public static final DebitCredit ZERO = DebitCredit.of(BigDecimal.ZERO, BigDecimal.ZERO);
   private final BigDecimal dr;

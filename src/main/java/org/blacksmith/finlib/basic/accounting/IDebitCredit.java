@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public interface IDebitCredit<T extends IDebitCredit<T>> {
+public interface IDebitCredit {
   BigDecimal getDr();
 
   BigDecimal getCr();
@@ -39,17 +39,17 @@ public interface IDebitCredit<T extends IDebitCredit<T>> {
     return getDr().equals(BigDecimal.ZERO) && getCr().equals(BigDecimal.ZERO);
   }
 
-  T add(IDebitCredit augend);
+  IDebitCredit add(IDebitCredit augend);
 
-  T add(BigDecimal augendDr, BigDecimal augendCr);
+  IDebitCredit add(BigDecimal augendDr, BigDecimal augendCr);
 
-  T subtract(IDebitCredit subtrahend);
+  IDebitCredit subtract(IDebitCredit subtrahend);
 
-  T subtract(BigDecimal subtrahendDr, BigDecimal subtrahendCr);
+  IDebitCredit subtract(BigDecimal subtrahendDr, BigDecimal subtrahendCr);
 
-  T swap();
+  IDebitCredit swap();
 
-  T negate();
+  IDebitCredit negate();
 
-  T clone();
+  IDebitCredit clone();
 }
